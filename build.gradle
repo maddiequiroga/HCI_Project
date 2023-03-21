@@ -177,4 +177,4 @@ def createScript(project, jvmOpts, name, mainClassName)
 
 
 createScript(project, altJvmArgs, 'project',
-             'edu.ou.cs.hci.project.app')
+             'edu.ou.cs.hci.project.App')
