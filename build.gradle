@@ -1,19 +1,180 @@
-plugins {
+plugins
+{
+    // https://docs.gradle.org/current/userguide/java_plugin.html
     id 'java'
+
+    // https://docs.gradle.org/current/userguide/eclipse_plugin.html
+    id 'eclipse'
+
+    // https://docs.gradle.org/current/userguide/idea_plugin.html
+    id 'idea'
+
+    // https://docs.gradle.org/current/userguide/visual_studio_plugin.html
+    id 'visual-studio'
+
+    // https://docs.gradle.org/current/userguide/xcode_plugin.html
+    id 'xcode'
+
+    // https://docs.gradle.org/current/userguide/application_plugin.html
+    id 'application'
+
+    // https://plugins.gradle.org/plugin/com.github.johnrengelman.plugin-shadow
+    // https://github.com/johnrengelman/shadow
+    // version works for Gradle 7+ and Java 8+
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+//******************************************************************************
 
-repositories {
+group = "ou.cs.hci"
+version = '1.2.1'
+
+def appClassName = "edu.ou.cs.hci.example.Base"
+
+def altJvmArgs = ['-Xms256m', '-Xmx768m', '-noclassgc',\
+    '-Dfile.encoding=utf-8', '-Dapple.laf.useScreenMenuBar=false',\
+    '-Dapple.awt.showGrowBox=true', '-Dapple.awt.brushMetalLook=false',\
+    '-Dapple.awt.antialiasing=on', '-Dapple.awt.graphics.UseQuartz=true']
+
+//******************************************************************************
+// Plugin Configuration (java)
+//******************************************************************************
+
+java
+{
+    toolchain
+    {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+sourceSets
+{
+    main
+    {
+        resources
+        {
+            srcDir 'src/main/java'
+            //include ".*.rsrc"
+            exclude "**/.DS_Store", "**/*.java.*"
+        }
+    }
+}
+
+jar
+{
+    manifest
+    {
+        attributes\
+            'Implementation-Title': 'ou-cs-hci',\
+            'Implementation-Version': archiveVersion,\
+            'Main-Class': appClassName
+
+            manifest.attributes provider: 'tribe7.net'
+            manifest.attributes permissions: 'all-permissions'
+            manifest.attributes codebase: '*'
+    }
+}
+
+javadoc
+{
+    maxMemory '256m'
+}
+
+tasks.withType(JavaCompile)
+{
+    // Run the compiler as a separate process for performance
+    options.fork = true
+
+    // docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html
+    // Uncomment out one the following to choose lint warnings to show
+    options.compilerArgs << "-Xlint:all"
+    //options.compilerArgs << "-Xlint:none"
+}
+
+//******************************************************************************
+// Plugin Configuration (application)
+//******************************************************************************
+
+applicationName = "base"
+
+mainClassName = appClassName
+
+applicationDefaultJvmArgs = altJvmArgs
+
+//******************************************************************************
+// Plugin Configuration (eclipse)
+//******************************************************************************
+
+//eclipse.classpath.downloadJavadoc = true
+
+//******************************************************************************
+// Plugin Configuration (shadow)
+//******************************************************************************
+// See https://imperceptiblethoughts.com/shadow/introduction/
+
+shadowJar
+{
+    archiveBaseName = applicationName + "-app"
+}
+
+//******************************************************************************
+// Dependencies
+//******************************************************************************
+
+repositories
+{
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+// DO NOT ADD OR CHANGE DEPENDENCIES WITHOUT EXPLICIT INSTRUCTOR PERMISSION!!!
+dependencies
+{
+    // Apache Commons CSV (commons.apache.org)
+    implementation ('org.apache.commons:commons-csv:1.9.0')
+
+    // Apache Commons IO (commons.apache.org)
+    //implementation ('commons-io:commons-io:2.11.0')
+
+    // Apache Commons Lang (commons.apache.org/)
+    //implementation ('org.apache.commons:commons-lang3:3.12')
 }
 
-test {
-    useJUnitPlatform()
+//******************************************************************************
+// Helper Code for Alternative Start Scripts
+//******************************************************************************
+
+// Creates a script for an additional execution entry point (main() method).
+// Must apply 'application' plugin to be able to call this method.
+// Adapted from https://stackoverflow.com/questions/18421857/
+// See also https://stackoverflow.com/questions/20736537/
+// See also https://stackoverflow.com/questions/21241767/
+def createScript(project, jvmOpts, name, mainClassName)
+{
+    project.tasks.create(name: name, type: CreateStartScripts)
+    {
+        applicationName = name
+        mainClass       = mainClassName
+        defaultJvmOpts  = jvmOpts
+        outputDir       = new File(project.buildDir, 'scripts')
+        classpath       = project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + project.configurations.runtimeClasspath
+    }
+
+    project.tasks[name].dependsOn(project.jar)
+
+    project.applicationDistribution.with
+    {
+        into("bin")
+        {
+            from(project.tasks[name])
+            fileMode = 0755
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        }
+    }
 }
+
+
+
+
+createScript(project, altJvmArgs, 'project',
+             'edu.ou.cs.hci.project.app')
