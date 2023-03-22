@@ -1,3 +1,5 @@
+package edu.ou.cs.hci.project.panes;
+
 //import java.lang.*;
 import java.util.*;
 import javafx.scene.*;
