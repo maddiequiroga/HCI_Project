@@ -1,4 +1,4 @@
-
+package edu.ou.cs.hci.project.panes;
 //import java.lang.*;
 import javafx.animation.*;
 //import javafx.application.Application;
