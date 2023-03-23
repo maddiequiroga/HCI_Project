@@ -19,7 +19,7 @@
 //
 //******************************************************************************
 
-package edu.ou.cs.hci.resources;
+package edu.ou.cs.hci.Application.project.resources;
 
 //import java.lang.*;
 import java.io.*;
