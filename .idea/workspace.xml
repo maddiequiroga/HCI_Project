@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b65b090-f793-48d2-ab98-7f4465a38eb2" name="Changes" comment="Manually merged master with eli" />
+    <list default="true" id="0b65b090-f793-48d2-ab98-7f4465a38eb2" name="Changes" comment="Manually merged master with eli">
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/Application" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/View.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/panes/AbstractPage" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +47,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="eli" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -120,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679609419505</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Manually merged master with eli">
+      <created>1679609709790</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1679609709790</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
