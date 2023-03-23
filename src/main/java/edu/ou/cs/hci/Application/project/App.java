@@ -10,25 +10,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-//******************************************************************************
-// Copyright (C) 2019-2020 University of Oklahoma Board of Trustees.
-//******************************************************************************
-// Last modified: Fri Feb 14 09:45:44 2020 by Chris Weaver
-//******************************************************************************
-// Major Modification History:
-//
-// 20190203 [weaver]:	Original file.
-// 20190220 [weaver]:	Adapted from swingmvc to fxmvc.
-// 20200212 [weaver]:	Updated for new PrototypeB in Spring 2020.
-//
-//******************************************************************************
-
-/**
- * The <CODE>Application</CODE> class.
- *
- * @author  Chris Weaver
- * @version %I%, %G%
- */
 public final class App extends Application
 {
     //**********************************************************************
@@ -64,7 +45,7 @@ public final class App extends Application
 
     public void	start(Stage stage)
     {
-        Text		text = new Text("Prototype C");
+        Text		text = new Text("Eat Your Food");
         StackPane	root = new StackPane();
 
         root.getChildren().add(text);
@@ -116,13 +97,9 @@ public final class App extends Application
 
         public void	handle(ActionEvent e)
         {
-            View		view1 = new View(controller, "View 1",  40,  40);
-            View		view2 = new View(controller, "View 2", 120, 120);
-            View		view3 = new View(controller, "View 3", 200, 200);
+            View		view1 = new View(controller, "Eat Your Food",  40,  40);
 
             controller.addView(view1);
-            controller.addView(view2);
-            controller.addView(view3);
 
             stage.hide();
         }

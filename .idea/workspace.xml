@@ -5,22 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b65b090-f793-48d2-ab98-7f4465a38eb2" name="Changes" comment="Added resource directory, including resource class he uses in class. will help with reading/writing/displaying data.">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/App.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/Controller.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/Model.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/View.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/View.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/panes/BrowsePage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/panes/HomePage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/panes/IngredientsPage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/panes/SavedRecipesPage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project/panes/ShoppingListPage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/resources/Resources.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/resources/data/genres.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/resources/data/movies.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/resources/data/ratings.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/ShoppingListPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/ShoppingListPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +47,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -81,6 +75,19 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/project" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -120,7 +127,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="eli" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
