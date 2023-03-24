@@ -143,8 +143,8 @@ public final class View
     {
 
         panes.add(new HomePage(controller));
-        panes.add(new BrowsePage(controller));
         panes.add(new IngredientsPage(controller));
+        panes.add(new BrowsePage(controller));
         panes.add(new SavedRecipesPage(controller));
         panes.add(new ShoppingListPage(controller));
 
