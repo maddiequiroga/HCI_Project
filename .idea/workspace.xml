@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b65b090-f793-48d2-ab98-7f4465a38eb2" name="Changes" comment="Created custom Ingredient object in Resources folder.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/View.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/AbstractPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/AbstractPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/IngredientsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/IngredientsPage.java" afterDir="false" />
+    <list default="true" id="0b65b090-f793-48d2-ab98-7f4465a38eb2" name="Changes" comment="Added button to swap tabs (View IngredientsPage.java and AbstractPane.java for example)">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679971183525</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added button to swap tabs (View IngredientsPage.java and AbstractPane.java for example)">
+      <created>1680019431652</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1680019431652</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -179,6 +183,7 @@
     <MESSAGE value="Manually merged master with eli" />
     <MESSAGE value="Removed unused directory" />
     <MESSAGE value="Created custom Ingredient object in Resources folder." />
-    <option name="LAST_COMMIT_MESSAGE" value="Created custom Ingredient object in Resources folder." />
+    <MESSAGE value="Added button to swap tabs (View IngredientsPage.java and AbstractPane.java for example)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added button to swap tabs (View IngredientsPage.java and AbstractPane.java for example)" />
   </component>
 </project>
