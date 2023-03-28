@@ -8,7 +8,7 @@ import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 import edu.ou.cs.hci.Application.project.Controller;
-import edu.ou.cs.hci.Application.project.resources.Resources;
+import edu.ou.cs.hci.Application.project.resources.*;
 
 //******************************************************************************
 
@@ -28,7 +28,6 @@ public abstract class AbstractPane
 
     public static final String	SWING_ICON	= RSRC + "example/swing/icon/";
     public static final String	FX_ICON	= RSRC + "example/fx/icon/";
-
     public static final String	FX_TEXT	= "example/fx/text/";
 
     //**********************************************************************

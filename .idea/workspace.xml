@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b65b090-f793-48d2-ab98-7f4465a38eb2" name="Changes" comment="Removed unused directory">
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/resources/Ingredient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/AbstractPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/AbstractPane.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/IngredientsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/ou/cs/hci/Application/project/panes/IngredientsPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
