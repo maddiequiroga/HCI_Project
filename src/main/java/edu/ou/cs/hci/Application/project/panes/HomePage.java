@@ -47,18 +47,30 @@ public class HomePage extends AbstractPane {
         addIngredients = new Button("Add Ingredients");
         addIngredients.setMinWidth(180);
         addIngredients.setAlignment(Pos.CENTER);
+        addIngredients.setOnAction(e -> {
+            changePage("IngredientsPage");
+        });
 
         browseRecipes = new Button("Browse Recipes");
         browseRecipes.setMinWidth(180);
         browseRecipes.setAlignment(Pos.CENTER);
+        browseRecipes.setOnAction(event -> {
+            changePage("BrowsePage");
+        });
 
         viewSavedRecipes = new Button("View Saved Recipes");
         viewSavedRecipes.setMinWidth(180);
         viewSavedRecipes.setAlignment(Pos.CENTER);
+        viewSavedRecipes.setOnAction(event -> {
+            changePage("SavedRecipesPage");
+        });
 
         viewShoppingList = new Button("View Shopping List");
         viewShoppingList.setMinWidth(180);
         viewShoppingList.setAlignment(Pos.CENTER);
+        viewShoppingList.setOnAction(event -> {
+            changePage("ShoppingListPage");
+        });
 
 
         buttons.getChildren().addAll(addIngredients, browseRecipes, viewSavedRecipes, viewShoppingList);
