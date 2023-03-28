@@ -60,6 +60,7 @@ public class HomePage extends AbstractPane {
         viewShoppingList.setMinWidth(180);
         viewShoppingList.setAlignment(Pos.CENTER);
 
+
         buttons.getChildren().addAll(addIngredients, browseRecipes, viewSavedRecipes, viewShoppingList);
 
         return buttons;

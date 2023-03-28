@@ -75,6 +75,7 @@ public final class Model
 
     public void	trigger(String name)
     {
+        
         System.out.println("  model: (not!) calculating function: " + name);
     }
 

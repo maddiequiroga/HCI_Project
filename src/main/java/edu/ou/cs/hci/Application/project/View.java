@@ -103,6 +103,7 @@ public class View
     {
         for (AbstractPane pane : panes)
             pane.initialize();
+
     }
 
     // The controller calls this method when it removes a view.
@@ -167,6 +168,7 @@ public class View
         public void	handle(ActionEvent e)
         {
             Object	source = e.getSource();
+
 
         }
     }
