@@ -15,7 +15,7 @@ import edu.ou.cs.hci.Application.project.panes.*;
 
 //******************************************************************************
 
-public final class View
+public class View
 {
     //**********************************************************************
     // Private Class Members (Layout)
@@ -42,10 +42,10 @@ public final class View
     private MenuItem					cutItem;
     private MenuItem					copyItem;
     private MenuItem					pasteItem;
+    private static TabPane                     tabPane;
 
     // File data
     private File						file;
-
     // Handlers
     private final ActionHandler			actionHandler;
     private final WindowHandler			windowHandler;
@@ -103,7 +103,6 @@ public final class View
     {
         for (AbstractPane pane : panes)
             pane.initialize();
-
     }
 
     // The controller calls this method when it removes a view.
@@ -135,6 +134,9 @@ public final class View
         // Update your menus as needed when any new model observables change...
     }
 
+    public static TabPane getTabPane() {
+        return tabPane;
+    }
     //**********************************************************************
     // Private Methods (Layout)
     //**********************************************************************
@@ -149,10 +151,11 @@ public final class View
         panes.add(new ShoppingListPage(controller));
 
         // Create a tab pane with tabs for the set of included panes
-        TabPane	tabPane = new TabPane();
+        tabPane = new TabPane();
 
-        for (AbstractPane pane : panes)
+        for (AbstractPane pane : panes) {
             tabPane.getTabs().add(pane.createTab());
+        }
 
 
         return new BorderPane(tabPane, null, null, null, null);

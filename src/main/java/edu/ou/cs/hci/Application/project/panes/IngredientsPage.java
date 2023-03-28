@@ -1,21 +1,23 @@
 package edu.ou.cs.hci.Application.project.panes;
 
 import edu.ou.cs.hci.Application.project.Controller;
+import edu.ou.cs.hci.Application.project.View;
+import edu.ou.cs.hci.Application.project.resources.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.*;
-import sun.security.krb5.internal.PAData;
 
 public class IngredientsPage extends AbstractPane {
 
@@ -46,7 +48,13 @@ public class IngredientsPage extends AbstractPane {
         GridPane rightPane = new GridPane();
         rightPane.setAlignment(Pos.CENTER_RIGHT);
 
-        ingredientsPane.getChildren().addAll(leftPane,rightPane);
+        Button nextPage = new Button("Next");
+
+        nextPage.setOnAction(event -> {
+            changePage("BrowsePage");
+        });
+
+        ingredientsPane.getChildren().addAll(leftPane,rightPane, nextPage);
 
         return ingredientsPane;
     }
@@ -86,25 +94,11 @@ public class IngredientsPage extends AbstractPane {
         TableView<Ingredient> browser = new TableView<>();
         browser.setPrefWidth(300);
 
-        Ingredient test = new Ingredient("Lettuce", 10, 2, new Date(3/28/2023));
-        browser.getItems().add(test);
+        Ingredient ing = new Ingredient("Lettuce", 10, 2, new Date(3/28/2023), 0);
+        browser.getItems().add(ing);
 
         pane.getChildren().add(browser);
         return pane;
     }
-}
 
-
-class Ingredient {
-    public String name;
-    public int quantity_size;
-    public int quantity_type;
-    public Date expiration_date;
-
-    public Ingredient(String name, int quantity_size, int quantity_type, Date expiration_date) {
-        this.name = name;
-        this.quantity_size = quantity_size;
-        this.quantity_type = quantity_type;
-        this.expiration_date = expiration_date;
-    }
 }
