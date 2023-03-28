@@ -1,12 +1,15 @@
 package edu.ou.cs.hci.Application.project.panes;
 
 import edu.ou.cs.hci.Application.project.Controller;
+import edu.ou.cs.hci.Application.project.View;
 import edu.ou.cs.hci.Application.project.resources.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -45,7 +48,13 @@ public class IngredientsPage extends AbstractPane {
         GridPane rightPane = new GridPane();
         rightPane.setAlignment(Pos.CENTER_RIGHT);
 
-        ingredientsPane.getChildren().addAll(leftPane,rightPane);
+        Button nextPage = new Button("Next");
+
+        nextPage.setOnAction(event -> {
+            changePage("BrowsePage");
+        });
+
+        ingredientsPane.getChildren().addAll(leftPane,rightPane, nextPage);
 
         return ingredientsPane;
     }
@@ -91,4 +100,5 @@ public class IngredientsPage extends AbstractPane {
         pane.getChildren().add(browser);
         return pane;
     }
+
 }

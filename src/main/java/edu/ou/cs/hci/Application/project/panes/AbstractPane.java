@@ -2,6 +2,9 @@ package edu.ou.cs.hci.Application.project.panes;
 
 //import java.lang.*;
 import java.util.*;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -9,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 import edu.ou.cs.hci.Application.project.Controller;
 import edu.ou.cs.hci.Application.project.resources.*;
-
+import edu.ou.cs.hci.Application.project.View;
 //******************************************************************************
 
 /**
@@ -67,7 +70,7 @@ public abstract class AbstractPane
         return hint;
     }
 
-    public Node	getBase()
+    public Node	    getBase()
     {
         return base;
     }
@@ -111,7 +114,6 @@ public abstract class AbstractPane
     public void	update(String key, Object value)
     {
     }
-
     // The controller calls this method whenever something changes in the model.
     // Update the nodes in the view to reflect the change.
     public void	updateProperty(String key, Object newValue, Object oldValue)
@@ -121,6 +123,33 @@ public abstract class AbstractPane
     //**********************************************************************
     // Public Class Methods (Resources)
     //**********************************************************************
+
+    // WARNING: May not be a long-term solution
+    // Works as intended now, but will need to monitor once we start adding listeners
+    // For example of implementation, go to IngredientsPage:54
+    // 0 - HomePage | 1 - IngredientsPage | 2 - BrowsePage | 3 - SavedRecipesPages | 4 - ShoppingListPage
+    public void changePage(String pageName) {
+
+        System.out.println("Changed Tab to:");
+        SelectionModel<Tab> sm = View.getTabPane().getSelectionModel();
+        if (pageName.equals("HomePage")) {
+            sm.select(0);
+        }
+        else if (pageName.equals("IngredientsPage")) {
+            sm.select(1);
+        }
+        else if (pageName.equals("BrowsePage")) {
+            sm.select(2);
+        }
+        else if (pageName.equals("SavedRecipesPage")) {
+            sm.select(3);
+        }
+        else if (pageName.equals("ShoppingListPage")) {
+            sm.select(4);
+        }
+
+        System.out.println(sm.getSelectedItem().getText());
+    }
 
     // Convenience method to create a node for an image located in resources
     // relative to the SWING_ICON package. See static member definitions above.
