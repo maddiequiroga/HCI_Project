@@ -16,12 +16,7 @@ import edu.ou.cs.hci.Application.project.resources.*;
 import edu.ou.cs.hci.Application.project.View;
 //******************************************************************************
 
-/**
- * The <CODE>AbstractPane</CODE> class.
- *
- * @author  Chris Weaver
- * @version %I%, %G%
- */
+
 public abstract class AbstractPane
 {
     //**********************************************************************

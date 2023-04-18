@@ -4,24 +4,29 @@ import edu.ou.cs.hci.Application.project.Controller;
 import edu.ou.cs.hci.Application.project.View;
 import edu.ou.cs.hci.Application.project.resources.Ingredient;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.event.*;
+import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.*;
+import javafx.util.Callback;
+import javafx.util.converter.DefaultStringConverter;
 
+@SuppressWarnings("unchecked")
 public class IngredientsPage extends AbstractPane {
 
-    private List<String> ingredients;
+    private ObservableList<Ingredient> ingredients;
     private List<Ingredient> chosenIngredients;
     private List<Tab> foodCategories;
     private Pane ingredientsPane;
@@ -30,8 +35,69 @@ public class IngredientsPage extends AbstractPane {
         super(controller, "View Ingredients", "View Ingredients");
 
         foodCategories = new ArrayList<Tab>();
+        ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
+
 
         setBase(buildPane());
+    }
+
+    public void initialize()
+    {
+        registerWidgetHandlers();
+
+        if (ingredients != null)
+            registerPropertyListeners(ingredients);
+    }
+
+    public void terminate()
+    {
+        if (ingredients != null)
+            unregisterPropertyListeners(ingredients);
+
+        unregisterWidgetHandlers();
+    }
+
+    public void update(String key, Object value)
+    {
+
+        if (ingredients == null)
+                return;
+    }
+
+    public void updateProperty(String key, Object newValue, Object oldValue)
+    {
+        if ("ingredients".equals(key))
+        {
+            ObservableList<Ingredient> iold = (ObservableList<Ingredient>) oldValue;
+            ObservableList<Ingredient> inew = (ObservableList<Ingredient>) newValue;
+
+            if (iold != null)
+                unregisterPropertyListeners(iold);
+
+            if (inew != null)
+                registerPropertyListeners(inew);
+        }
+    }
+
+    private void registerWidgetHandlers()
+    {
+
+
+    }
+
+    private void unregisterWidgetHandlers()
+    {
+
+    }
+
+    private void registerPropertyListeners(ObservableList<Ingredient> ingredients)
+    {
+
+    }
+
+    private void unregisterPropertyListeners(ObservableList<Ingredient> ingredients)
+    {
+
     }
 
     private Pane buildPane() {
@@ -54,7 +120,7 @@ public class IngredientsPage extends AbstractPane {
             changePage("BrowsePage");
         });
 
-        ingredientsPane.getChildren().addAll(leftPane,rightPane, nextPage);
+        ingredientsPane.getChildren().addAll(leftPane, rightPane, nextPage);
 
         return ingredientsPane;
     }
@@ -89,13 +155,25 @@ public class IngredientsPage extends AbstractPane {
 
         return foodCats;
     }
-    public Pane buildBrowser() {
-        GridPane pane = new GridPane();
+    public TableView<Ingredient> buildBrowser() {
+
         TableView<Ingredient> browser = new TableView<>();
-        browser.setPrefWidth(300);
+        browser.setPrefSize(500, 1000);
 
-        pane.getChildren().add(browser);
-        return pane;
+        browser.setEditable(false);
+        browser.setPlaceholder(new Text("No Data!"));
+        browser.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        TableColumn<Ingredient, String> ingredientNameColumn = new TableColumn<>("Ingredient");
+        ingredientNameColumn.setCellValueFactory(new PropertyValueFactory<Ingredient, String>("ingredientName"));
+        browser.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        browser.getColumns().add(ingredientNameColumn);
+
+        for (Ingredient ingredient: ingredients)
+            browser.getItems().add(ingredient);
+
+        return browser;
     }
-
 }
+

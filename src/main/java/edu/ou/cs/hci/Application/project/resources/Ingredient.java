@@ -6,46 +6,46 @@ import java.util.*;
 
 public class Ingredient {
 
-    private final SimpleStringProperty ingredient_name;
-    private final SimpleDoubleProperty quantity_size;
-    private final SimpleStringProperty quantity_type;
-    private final SimpleIntegerProperty expiration_date;
-    private final SimpleIntegerProperty ingredient_type;
+    private final SimpleStringProperty ingredientName;
+    private final SimpleDoubleProperty quantitySize;
+    private final SimpleStringProperty quantityType;
+    private final SimpleIntegerProperty expirationDate;
+    private final SimpleIntegerProperty ingredientType;
 
     public Ingredient(List<String> item) {
-        ingredient_name = new SimpleStringProperty(item.get(0));
-        quantity_size = new SimpleDoubleProperty(Double.parseDouble(item.get(1)));
-        quantity_type = new SimpleStringProperty(item.get(2));
-        expiration_date = new SimpleIntegerProperty(Integer.parseInt(item.get(3)));
-        ingredient_type = new SimpleIntegerProperty(Integer.parseInt(item.get(4)));
+        ingredientName = new SimpleStringProperty(item.get(0));
+        quantitySize = new SimpleDoubleProperty(Double.parseDouble(item.get(1)));
+        quantityType = new SimpleStringProperty(item.get(2));
+        expirationDate = new SimpleIntegerProperty(Integer.parseInt(item.get(3)));
+        ingredientType = new SimpleIntegerProperty(Integer.parseInt(item.get(4)));
     }
 
     /////////////
     // Getters //
     /////////////
-    public String getIngredientName() { return ingredient_name.get(); }
-    public double getQuantitySize() { return quantity_size.get(); }
-    public String getQuantityType() { return quantity_type.get(); }
-    public int getExpiration() { return expiration_date.get(); }
-    public int getIngredientType() { return ingredient_type.get(); }
+    public String getIngredientName() { return ingredientName.get(); }
+    public double getQuantitySize() { return quantitySize.get(); }
+    public String getQuantityType() { return quantityType.get(); }
+    public int getExpiration() { return expirationDate.get(); }
+    public int getIngredientType() { return ingredientType.get(); }
 
     /////////////
     // Setters //
     /////////////
-    public void setIngredientName(String v) { ingredient_name.set(v); }
-    public void setQuantitySize(double v) { quantity_size.set(v); }
-    public void setQuantityType(String v) { quantity_type.set(v); }
-    public void setExpiration(int v) { expiration_date.set(v); }
-    public void setIngredientType(int v) { ingredient_type.set(v); }
+    public void setIngredientName(String v) { ingredientName.set(v); }
+    public void setQuantitySize(double v) { quantitySize.set(v); }
+    public void setQuantityType(String v) { quantityType.set(v); }
+    public void setExpiration(int v) { expirationDate.set(v); }
+    public void setIngredientType(int v) { ingredientType.set(v); }
 
     //////////////////////
     // Property Methods //
     //////////////////////
-    public StringProperty nameProperty() { return ingredient_name; }
-    public DoubleProperty quantitySizeProperty() { return quantity_size; }
-    public StringProperty quantityTypeProperty() { return quantity_type; }
-    public IntegerProperty expirationProperty() { return expiration_date; }
-    public IntegerProperty ingredientTypeProperty() { return ingredient_type; }
+    public StringProperty nameProperty() { return ingredientName; }
+    public DoubleProperty quantitySizeProperty() { return quantitySize; }
+    public StringProperty quantityTypeProperty() { return quantityType; }
+        public IntegerProperty expirationProperty() { return expirationDate; }
+    public IntegerProperty ingredientTypeProperty() { return ingredientType; }
 
 
     public List<String>	getAllAttributesAsStrings()

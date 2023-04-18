@@ -100,11 +100,10 @@ public final class Model
 
         observables.put("ingredients", ip);
 
-
         Recipe							r = null;//rl.get(0);
-        SimpleObjectProperty<Recipe>	sp = new SimpleObjectProperty<Recipe>(r);
+        SimpleObjectProperty<Recipe>	srp = new SimpleObjectProperty<Recipe>(r);
 
-        observables.put("recipe", sp);
+        observables.put("recipe", srp);
     }
 
     private void	load(ObservableValue<? extends File> observable,
