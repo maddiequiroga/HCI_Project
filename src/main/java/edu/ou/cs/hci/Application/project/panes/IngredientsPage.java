@@ -94,9 +94,6 @@ public class IngredientsPage extends AbstractPane {
         TableView<Ingredient> browser = new TableView<>();
         browser.setPrefWidth(300);
 
-        Ingredient ing = new Ingredient("Lettuce", 10, 2, new Date(3/28/2023), 0);
-        browser.getItems().add(ing);
-
         pane.getChildren().add(browser);
         return pane;
     }
