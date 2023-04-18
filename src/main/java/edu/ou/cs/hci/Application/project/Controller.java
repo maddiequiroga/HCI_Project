@@ -123,12 +123,11 @@ public final class Controller
         model.setPropertyValue(key, value);
     }
 
-    //SAVE For Model, Commented out ATM -Eli
-//    public void	save(File file)
-//    {
-//        System.out.println("controller: saving to file " + file);
-//
-//        model.save(file);
-//    }
+    public void	save(File file)
+    {
+        System.out.println("controller: saving to file " + file);
+
+        model.save(file);
+    }
 }
 

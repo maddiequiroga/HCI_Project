@@ -30,18 +30,6 @@ public class View
 
     // Master of the program, manager of the data, mediator of all updates
     private final Controller				controller;
-    private MenuItem					aboutItem;
-    private MenuItem					quitItem;
-    private MenuItem					newItem;
-    private MenuItem					openItem;
-    private MenuItem					closeItem;
-    private MenuItem					saveItem;
-    private MenuItem					printItem;
-    private MenuItem					undoItem;
-    private MenuItem					redoItem;
-    private MenuItem					cutItem;
-    private MenuItem					copyItem;
-    private MenuItem					pasteItem;
     private static TabPane                     tabPane;
 
     // File data
@@ -76,7 +64,7 @@ public class View
         Pane	view = buildView();
 
         // Create a scene with an initial size, and attach a style sheet to it
-        Scene		scene = new Scene(view, SCENE_W, SCENE_H);
+        Scene		scene = new Scene(view, SCENE_W, SCENE_H + 32);
         URL		url = View.class.getResource("View.css");
         String		surl = url.toExternalForm();
 

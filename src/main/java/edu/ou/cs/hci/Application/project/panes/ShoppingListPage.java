@@ -66,33 +66,6 @@ public final class ShoppingListPage extends AbstractPane
 
     // The controller calls this method when it adds a view.
     // Set up the nodes in the view with data accessed through the controller.
-    public void	initialize()
-    {
-        smodel.selectedIndexProperty().addListener(this::changeIndex);
-
-        int	index = (Integer)controller.get("itemIndex");
-
-        smodel.select(index);
-    }
-
-    // The controller calls this method when it removes a view.
-    // Unregister event and property listeners for the nodes in the view.
-    public void	terminate()
-    {
-        smodel.selectedIndexProperty().removeListener(this::changeIndex);
-    }
-
-    // The controller calls this method whenever something changes in the model.
-    // Update the nodes in the view to reflect the change.
-    public void	update(String key, Object value)
-    {
-        if ("itemIndex".equals(key))
-        {
-            int	index = (Integer)value;
-
-            smodel.select(index);
-        }
-    }
 
     //**********************************************************************
     // Private Methods (Layout)
