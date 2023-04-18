@@ -55,7 +55,7 @@ public final class Model
         properties.put("ingredient.name", "");
         properties.put("ingredient.quantity.size", 0.0);
         properties.put("ingredient.quantity.type", "");
-        properties.put("ingredient.expiration", 0.0);
+        properties.put("ingredient.expiration", 0);
         properties.put("ingredient.type", 0);
 
     }

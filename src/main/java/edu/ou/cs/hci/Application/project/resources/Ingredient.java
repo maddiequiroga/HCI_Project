@@ -44,7 +44,7 @@ public class Ingredient {
     public StringProperty nameProperty() { return ingredientName; }
     public DoubleProperty quantitySizeProperty() { return quantitySize; }
     public StringProperty quantityTypeProperty() { return quantityType; }
-        public IntegerProperty expirationProperty() { return expirationDate; }
+    public IntegerProperty expirationProperty() { return expirationDate; }
     public IntegerProperty ingredientTypeProperty() { return ingredientType; }
 
 
