@@ -1,38 +1,84 @@
 package edu.ou.cs.hci.Application.project.panes;
 
-//import java.lang.*;
-import java.util.List;
-import javafx.beans.property.SimpleStringProperty;
+import edu.ou.cs.hci.Application.project.Controller;
+import edu.ou.cs.hci.Application.project.View;
+import edu.ou.cs.hci.Application.project.Recipe;
+
+import java.util.*;
+
+import java.util.function.Predicate;
+import javafx.collections.transformation.FilteredList;
+import javafx.beans.property.Property;
+import javafx.beans.property.*;
+import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
+import javafx.application.Application;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.*;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.*;
 import javafx.util.Callback;
-import edu.ou.cs.hci.Application.project.Controller;
+import javafx.util.converter.DefaultStringConverter;
+
+import javax.swing.*;
 
 public final class BrowsePage extends AbstractPane {
 
     // Layout
-	private TableView<String> table;
-	private SelectionModel<String> smodel;
+    //private ObservableList<Recipe> recipes;
+	private TableView<Recipe> table;
+	private SelectionModel<Recipe> smodel;
     private BorderPane pane;
     private static final Insets	PADDING = new Insets(40.0, 20.0, 40.0, 20.0);
+
+    // Accordion Elements
+    private TextField recipeSearch;
+
+    private CheckBox ingredient1;
+    private CheckBox ingredient2;
+    private CheckBox ingredient3;
+
+    private Spinner<Integer> servingSize;
+
+    private CheckBox checkboxGluten;
+    private CheckBox checkboxDairy;
+
+    private Spinner<Integer> cookingTime;
+    private ActionHandler actionHandler;
+
+    private boolean	ignoreSelectionEvents;
 
     //===============================================================================================
 
     public BrowsePage(Controller controller) {
         super(controller, "Browse Recipes", "Add/Remove Ingredients");
         setBase(buildBrowsePane());
+        //recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
+        actionHandler = new ActionHandler();
     }
 
+    public void	initialize()
+	{
+		registerWidgetHandlers();
+		updateFilter();
+	}
+
+    private void updateFilter()
+	{
+		ObservableList<Recipe> recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
+		Predicate<Recipe> predicate = new FilterPredicate();
+
+		ignoreSelectionEvents = true;
+		table.setItems(FXCollections.observableArrayList(new FilteredList<Recipe>(recipes, predicate)));
+		ignoreSelectionEvents = false;
+	}
 
     private Pane buildBrowsePane()
     {
@@ -54,19 +100,74 @@ public final class BrowsePage extends AbstractPane {
         return pane;
     }
 
+    private void registerWidgetHandlers()
+    {
+
+
+    }
+
+    private void unregisterWidgetHandlers()
+    {
+
+    }
+
+    private void registerPropertyListeners(ObservableList<Recipe> recipes)
+    {
+
+    }
+
+    private void unregisterPropertyListeners(ObservableList<Recipe> recipes)
+    {
+
+    }
+
     private Node buildAccordion()
     {
         // Create an Accordion object
         Accordion accordion = new Accordion();
 
         // Create several TitledPane objects
-        TitledPane pane1 = new TitledPane("Meal Type", new VBox());
-        TitledPane pane2 = new TitledPane("Serving Size", new VBox());
-        TitledPane pane3 = new TitledPane("Dietary Restrictions", new VBox());
-        TitledPane pane4 = new TitledPane("Cooking Time", new VBox());
+        TitledPane pane1 = new TitledPane("Recipe", new VBox());
+        Label label = new Label("Search Recipe:");
+        recipeSearch = new TextField();
+        VBox recipeSearchBox = new VBox(label, recipeSearch);
+        pane1.setContent(recipeSearchBox);
+
+        TitledPane pane2 = new TitledPane("Ingredients", new VBox());
+        VBox ingredientsBox = (VBox) pane2.getContent();
+        ingredient1 = new CheckBox("Chicken");
+        ingredient2 = new CheckBox("Lettuce");
+        ingredient3 = new CheckBox("Cheese");
+        ingredientsBox.getChildren().addAll(ingredient1, ingredient2, ingredient3);
+
+        TitledPane pane3 = new TitledPane("Serving Size", new VBox());
+        VBox servingSizeBox = (VBox) pane3.getContent();
+        SpinnerValueFactory<Integer> servingSizeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, 1);
+        servingSizeValueFactory.setWrapAround(true);
+        servingSize = new Spinner<>(1, 12, 1);
+        servingSize.setValueFactory(servingSizeValueFactory);
+        servingSize.setEditable(false);
+        servingSize.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_LEFT_VERTICAL);
+        servingSizeBox.getChildren().add(servingSize);
+
+        TitledPane pane4 = new TitledPane("Dietary Restrictions", new VBox());
+        VBox dietaryRestrictionsBox = (VBox) pane4.getContent();
+        checkboxGluten = new CheckBox("Gluten Free");
+        checkboxDairy = new CheckBox("Dairy Free");
+        dietaryRestrictionsBox.getChildren().addAll(checkboxGluten, checkboxDairy);
+
+        TitledPane pane5 = new TitledPane("Cooking Time", new VBox());
+        VBox cookingTimeBox = (VBox) pane5.getContent();
+        SpinnerValueFactory<Integer> cookingTimeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 120, 0);
+        cookingTimeValueFactory.setWrapAround(true);
+        cookingTime = new Spinner<>(0, 120, 0);
+        cookingTime.setValueFactory(cookingTimeValueFactory);
+        cookingTime.setEditable(true);
+        cookingTime.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_LEFT_VERTICAL);
+        cookingTimeBox.getChildren().add(cookingTime);
 
         // Add the TitledPane objects to the Accordion
-        accordion.getPanes().addAll(pane1, pane2, pane3, pane4);
+        accordion.getPanes().addAll(pane1, pane2, pane3, pane4, pane5);
 
         // Create a VBox to hold the Accordion
         VBox accordionBox = new VBox(accordion);
@@ -106,90 +207,157 @@ public final class BrowsePage extends AbstractPane {
         return detailsBox;
     }
 
-    private Node buildTableView()
+    private TableView<Recipe> buildTableView()
     {
         // Create the table and grab its selection model
-		table = new TableView<String>();
+		table = new TableView<Recipe>();
+        table.setPrefSize(700, 400);
+        smodel = table.getSelectionModel();
 
 		// Set up some helpful stuff including single selection mode
-		table.setEditable(true);
+		table.setEditable(false);
 		table.setPlaceholder(new Text("No Data!"));
 		table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 		// Add columns for title and image
 		table.getColumns().add(buildRecipeColumn());
 		table.getColumns().add(buildIngredientsColumn());
-        table.getColumns().add(buildPortionColumn());
-        table.getColumns().add(buildCaloriesColumn());
+        table.getColumns().add(buildServingColumn());
         table.getColumns().add(buildAllergensColumn());
         table.getColumns().add(buildSavedColumn());
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
 		return table;
     }
 
-    private TableColumn<String, String>	buildRecipeColumn()
+    private TableColumn<Recipe, String>	buildRecipeColumn()
 	{
-		TableColumn<String, String>	column = new TableColumn<String, String>("Recipe Name");
-
-		column.setEditable(true);
-		column.setPrefWidth(100);
-		column.setCellValueFactory(new PropertyValueFactory<String, String>("Recipe Name"));
+		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Recipe");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipeName"));
 		return column;
 	}
 
-    private TableColumn<String, String>	buildIngredientsColumn()
+    private TableColumn<Recipe, ArrayList<String>>	buildIngredientsColumn()
 	{
-		TableColumn<String, String>	column = new TableColumn<String, String>("Ingredients Owned");
-
-		column.setEditable(true);
-		column.setPrefWidth(150);
-		column.setCellValueFactory(new PropertyValueFactory<String, String>("Ingredients Owned"));
-
+		TableColumn<Recipe, ArrayList<String>>	column = new TableColumn<Recipe, ArrayList<String>>("Ingredients");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, ArrayList<String>>("recipeIngredients"));
 		return column;
 	}
 
-    private TableColumn<String, String>	buildPortionColumn()
+    private TableColumn<Recipe, Integer> buildServingColumn()
 	{
-		TableColumn<String, String>	column = new TableColumn<String, String>("Portion Size");
-
-		column.setEditable(true);
-		column.setPrefWidth(100);
-		column.setCellValueFactory(new PropertyValueFactory<String, String>("Portion Size"));
-
+		TableColumn<Recipe, Integer> column = new TableColumn<Recipe, Integer>("Serving Size");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Integer>("recipeServings"));
 		return column;
 	}
 
-    private TableColumn<String, String>	buildCaloriesColumn()
+    private TableColumn<Recipe, Boolean> buildAllergensColumn()
 	{
-		TableColumn<String, String>	column = new TableColumn<String, String>("Calories\nPer Serving");
-
-		column.setEditable(true);
-		column.setPrefWidth(100);
-		column.setCellValueFactory(new PropertyValueFactory<String, String>("Calories Per Serving"));
-
+		TableColumn<Recipe, Boolean> column = new TableColumn<Recipe, Boolean>("Allergens");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
 		return column;
 	}
 
-    private TableColumn<String, String>	buildAllergensColumn()
+    private TableColumn<Recipe, Boolean> buildSavedColumn()
 	{
-		TableColumn<String, String>	column = new TableColumn<String, String>("Allergens");
-
-		column.setEditable(true);
-		column.setPrefWidth(150);
-		column.setCellValueFactory(new PropertyValueFactory<String, String>("Allergens"));
-
+		TableColumn<Recipe, Boolean> column = new TableColumn<Recipe, Boolean>("Saved");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
 		return column;
 	}
 
-    private TableColumn<String, String>	buildSavedColumn()
+    
+    /*
+    private ArrayList<ArrayList<String>> divideRecipeColumns()
+    {
+        // Fruits - 0
+        // Vegetables - 1
+        // Protein/Alternatives - 2
+        // Dairy/Alternatives - 3
+        // Grains - 4
+        // Fats/Oils/Spices - 5
+        ArrayList<ArrayList<String>> grandList = new ArrayList<>();
+        ArrayList<String> listRecipeNames = new ArrayList<>();
+        ArrayList<String> listIngredients = new ArrayList<>();
+        ArrayList<String> listAmountSizes = new ArrayList<>();
+        ArrayList<String> listAmountTypes = new ArrayList<>();
+        ArrayList<String> listGluten = new ArrayList<>();
+        ArrayList<String> listDairy = new ArrayList<>();
+        ArrayList<String> listServings = new ArrayList<>();
+        ArrayList<String> listTimes = new ArrayList<>();
+        ArrayList<String> listDirections = new ArrayList<>();
+
+        // Populate a list for each separate column
+        for (Recipe recipe : recipes){
+            List<String> strings = recipe.getAllAttributesAsStrings();
+            listRecipeNames.add(strings.get(0));
+            listIngredients.add(strings.get(1));
+            listAmountSizes.add(strings.get(2));
+            listAmountTypes.add(strings.get(3));
+            listGluten.add(strings.get(4));
+            listDairy.add(strings.get(5));
+            listServings.add(strings.get(6));
+            listTimes.add(strings.get(7));
+            listDirections.add(strings.get(8));
+        }
+        
+        // grandList stores lists of each separate column
+        grandList.add(listRecipeNames);
+        grandList.add(listIngredients);
+        grandList.add(listAmountSizes);
+        grandList.add(listAmountTypes);
+        grandList.add(listGluten);
+        grandList.add(listDairy);
+        grandList.add(listServings);
+        grandList.add(listTimes);
+        grandList.add(listDirections);
+        
+        return grandList;
+    }
+    */
+
+    private final class ActionHandler
+            implements EventHandler<ActionEvent>
+    {
+        public void	handle(ActionEvent e)
+        {
+            Object source = e.getSource();
+
+        }
+    }
+
+    private final class FilterPredicate
+		implements Predicate<Recipe>
 	{
-		TableColumn<String, String>	column = new TableColumn<String, String>("Saved");
+		public boolean	test(Recipe recipe)
+		{
+			String rn = recipeSearch.getText();
+            if ((rn.length() > 0) && !recipe.getRecipeName().contains(rn))
+				return false;
 
-		column.setEditable(true);
-		column.setPrefWidth(50);
-		column.setCellValueFactory(new PropertyValueFactory<String, String>("Saved"));
+            if (ingredient1.isSelected() && !recipe.getIngredients().contains("Chicken"))
+                return false;
 
-		return column;
+            if (ingredient2.isSelected() && !recipe.getIngredients().contains("Lettuce"))
+                return false;
+
+            if (ingredient3.isSelected() && !recipe.getIngredients().contains("Cheese"))
+                return false;
+
+            if (recipe.getServings() < servingSize.getValue())
+                return false;
+            
+            if (checkboxGluten.isSelected() && recipe.getGluten())
+                return false;
+
+            if (checkboxDairy.isSelected() && recipe.getDairy())
+                return false;
+
+            if (recipe.getTime() < cookingTime.getValue())
+                return false;
+            return true;
+		}
 	}
     
 }
+
+
