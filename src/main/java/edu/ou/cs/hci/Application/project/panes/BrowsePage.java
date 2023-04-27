@@ -50,7 +50,7 @@ public final class BrowsePage extends AbstractPane {
     private CheckBox checkboxGluten;
     private CheckBox checkboxDairy;
 
-    private Spinner<Integer> cookingTime;
+    private Spinner<Double> cookingTime;
     private ActionHandler actionHandler;
 
     private Label directions;
@@ -92,15 +92,12 @@ public final class BrowsePage extends AbstractPane {
 		Predicate<Recipe> predicate = new FilterPredicate();
 
 		ignoreSelectionEvents = true;
-		table.setItems(FXCollections.observableArrayList(new FilteredList<Recipe>(recipes, predicate)));
+		table.setItems(new FilteredList<Recipe>(recipes, predicate));
 		ignoreSelectionEvents = false;
 	}
 
     public void	updateProperty(String key, Object newValue, Object oldValue)
 	{
-		//System.out.println("CollectionPane.updateProperty " + key +
-		//				   " to " + newValue + " from " + oldValue);
-
 		if ("recipe".equals(key))
 		{
 			Recipe	rold = (Recipe)oldValue;
@@ -124,8 +121,6 @@ public final class BrowsePage extends AbstractPane {
 			Recipe	recipe = (Recipe)controller.getProperty("recipe");
 
 			updateFilter();
-
-			//smodel.select(movie);
 		}
 	}
 
@@ -137,7 +132,6 @@ public final class BrowsePage extends AbstractPane {
 	private void populateWidgetsWithCurrentValues(Recipe recipe)
 	{
 		directions.setText(recipe.getDirections());
-        System.out.println(recipe);
 	}
 
     private Pane buildBrowsePane()
@@ -163,11 +157,21 @@ public final class BrowsePage extends AbstractPane {
     private void registerWidgetHandlers()
     {
         smodel.selectedItemProperty().addListener(this::changeItem);
+        recipeSearch.setOnAction(actionHandler);
+        servingSize.valueProperty().addListener(this::changeInteger);
+        checkboxDairy.selectedProperty().addListener(this::changeBoolean);
+        checkboxGluten.selectedProperty().addListener(this::changeBoolean);
+        cookingTime.valueProperty().addListener(this::changeDouble);
     }
 
     private void unregisterWidgetHandlers()
     {
         smodel.selectedItemProperty().removeListener(this::changeItem);
+        recipeSearch.setOnAction(null);
+        servingSize.valueProperty().removeListener(this::changeInteger);
+        checkboxDairy.selectedProperty().removeListener(this::changeBoolean);
+        checkboxGluten.selectedProperty().removeListener(this::changeBoolean);
+        cookingTime.valueProperty().removeListener(this::changeDouble);
     }
 
     private void registerPropertyListeners(Recipe recipe)
@@ -192,18 +196,20 @@ public final class BrowsePage extends AbstractPane {
         VBox recipeSearchBox = new VBox(label, recipeSearch);
         pane1.setContent(recipeSearchBox);
 
+        /*
         TitledPane pane2 = new TitledPane("Ingredients", new VBox());
         VBox ingredientsBox = (VBox) pane2.getContent();
         ingredient1 = new CheckBox("Chicken");
         ingredient2 = new CheckBox("Lettuce");
         ingredient3 = new CheckBox("Cheese");
         ingredientsBox.getChildren().addAll(ingredient1, ingredient2, ingredient3);
+        */
 
         TitledPane pane3 = new TitledPane("Serving Size", new VBox());
         VBox servingSizeBox = (VBox) pane3.getContent();
-        SpinnerValueFactory<Integer> servingSizeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, 1);
+        SpinnerValueFactory<Integer> servingSizeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 50);
         servingSizeValueFactory.setWrapAround(true);
-        servingSize = new Spinner<>(1, 12, 1);
+        servingSize = new Spinner<>(1, 50, 50);
         servingSize.setValueFactory(servingSizeValueFactory);
         servingSize.setEditable(false);
         servingSize.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_LEFT_VERTICAL);
@@ -217,16 +223,16 @@ public final class BrowsePage extends AbstractPane {
 
         TitledPane pane5 = new TitledPane("Cooking Time", new VBox());
         VBox cookingTimeBox = (VBox) pane5.getContent();
-        SpinnerValueFactory<Integer> cookingTimeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 120, 0);
+        SpinnerValueFactory<Double> cookingTimeValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 12.0, 12.0, 0.25);
         cookingTimeValueFactory.setWrapAround(true);
-        cookingTime = new Spinner<>(0, 120, 0);
+        cookingTime = new Spinner<>(0.0, 12.0, 12.0);
         cookingTime.setValueFactory(cookingTimeValueFactory);
         cookingTime.setEditable(true);
         cookingTime.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_LEFT_VERTICAL);
         cookingTimeBox.getChildren().add(cookingTime);
 
         // Add the TitledPane objects to the Accordion
-        accordion.getPanes().addAll(pane1, pane2, pane3, pane4, pane5);
+        accordion.getPanes().addAll(pane1, pane3, pane4, pane5);
 
         // Create a VBox to hold the Accordion
         VBox accordionBox = new VBox(accordion);
@@ -284,6 +290,7 @@ public final class BrowsePage extends AbstractPane {
 		table.getColumns().add(buildIngredientsColumn());
         table.getColumns().add(buildServingColumn());
         table.getColumns().add(buildAllergensColumn());
+        table.getColumns().add(buildTimeColumn());
         table.getColumns().add(buildSavedColumn());
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -339,6 +346,13 @@ public final class BrowsePage extends AbstractPane {
 });
 		return column;
 	}
+
+    private TableColumn<Recipe, Double> buildTimeColumn()
+    {
+        TableColumn<Recipe, Double> column = new TableColumn<Recipe, Double>("Time (Hours)");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("time"));
+		return column;
+    }
 
     private TableColumn<Recipe, Boolean> buildSavedColumn()
 	{
@@ -396,8 +410,7 @@ public final class BrowsePage extends AbstractPane {
     }
     */
 
-   private void changeItem(ObservableValue<? extends Recipe> observable,
-							   Recipe oldValue, Recipe newValue)
+   private void changeItem(ObservableValue<? extends Recipe> observable, Recipe oldValue, Recipe newValue)
 	{
 		// Ignore changes to Table selection that arise from filtering.
 		if (ignoreSelectionEvents)
@@ -407,11 +420,30 @@ public final class BrowsePage extends AbstractPane {
 			controller.setProperty("recipe", newValue);
 	}
 
+    
+    private void changeInteger(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+	{
+		if (observable == servingSize.valueProperty())
+			updateFilter();
+	}
+
+    private void changeDouble(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+    {
+        if (observable == cookingTime.valueProperty())
+            updateFilter();
+    }
+    
+    private void changeBoolean(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+    {
+        if (newValue){
+            updateFilter();
+        }
+    }
+
    private void	handleChangeS(ObservableValue<? extends String> observable,
 								  String oldValue, String newValue)
 	{
 		Recipe selectedRecipe = (Recipe)controller.getProperty("recipe");
-        System.out.println(observable);
 
 		if (observable == selectedRecipe.directionsProperty())
 			directions.setText(newValue);
@@ -424,6 +456,8 @@ public final class BrowsePage extends AbstractPane {
         {
             Object source = e.getSource();
 
+            if (source == recipeSearch)
+                updateFilter();
         }
     }
 
@@ -435,26 +469,19 @@ public final class BrowsePage extends AbstractPane {
 			String rn = recipeSearch.getText();
             if ((rn.length() > 0) && !recipe.getRecipeName().contains(rn))
 				return false;
-
-            if (ingredient1.isSelected() && !recipe.getRecipeIngredients().contains("Chicken"))
-                return false;
-
-            if (ingredient2.isSelected() && !recipe.getRecipeIngredients().contains("Lettuce"))
-                return false;
-
-            if (ingredient3.isSelected() && !recipe.getRecipeIngredients().contains("Cheese"))
-                return false;
-
-            if (recipe.getServings() < servingSize.getValue())
+            
+            if (recipe.getServings() > servingSize.getValue())
                 return false;
             
-            if (checkboxGluten.isSelected() && recipe.getGluten())
+            if (checkboxGluten.isSelected() && !recipe.getGluten()){
                 return false;
+            }
 
-            if (checkboxDairy.isSelected() && recipe.getDairy())
+            if (checkboxDairy.isSelected() && !recipe.getDairy()){
                 return false;
+            }
 
-            if (recipe.getTime() < cookingTime.getValue())
+            if (recipe.getTime() > cookingTime.getValue())
                 return false;
             return true;
 		}
