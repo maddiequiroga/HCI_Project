@@ -1,5 +1,10 @@
 package edu.ou.cs.hci.Application.project.panes;
 
+import edu.ou.cs.hci.Application.project.Controller;
+import edu.ou.cs.hci.Application.project.View;
+import edu.ou.cs.hci.Application.project.resources.Ingredient;
+import edu.ou.cs.hci.Application.project.Recipe;
+
 //import java.lang.*;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,120 +22,148 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import edu.ou.cs.hci.Application.project.Controller;
+import java.util.ArrayList;
 
+import javax.swing.*;
+
+@SuppressWarnings("unchecked")
 public final class ShoppingListPage extends AbstractPane
 {
-    //**********************************************************************
     // Private Class Members
-    //**********************************************************************
-
+    private ObservableList<Ingredient>  ingredients;
+    private ObservableList<Recipe>      recipes;
+    private SelectionModel<Ingredient>  smodel;
+    private Pane                        shoppingPane;
     private static final String	NAME = "Shopping List";
     private static final String	HINT = "Shopping List for ingredients";
-
-    //**********************************************************************
-    // Private Class Members (Effects)
-    //**********************************************************************
-
-    private static final Glow			GLOW =
-            new Glow(0.3);
-
-    private static final ColorAdjust	COLOR_ADJUST =
-            new ColorAdjust(0.0, 0.0, -0.25, 0.0);
-
-    //**********************************************************************
-    // Private Members
-    //**********************************************************************
-
-    // Data
     private List<List<String>>			data;
-
+    private TableColumn<Recipe, String> shoppingColumn;
+    private ArrayList<ObservableList<Ingredient>> ingredItems;
     // Layout
     private BorderPane					base;
-    private TableView<Record>			table;
-    private SelectionModel<Record>		smodel;
+    private TableView<Recipe>			table;
 
-    //**********************************************************************
-    // Constructors and Finalizer
-    //**********************************************************************
+    // Constructors
 
     public ShoppingListPage(Controller controller)
     {
         super(controller, NAME, HINT);
-
+        ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
+        recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
         setBase(buildPane());
     }
 
-    //**********************************************************************
-    // Public Methods (Controller)
-    //**********************************************************************
+    // Public Methods (Controller), controller calls this method when it adds a view.
 
-    // The controller calls this method when it adds a view.
-    // Set up the nodes in the view with data accessed through the controller.
-
-    //**********************************************************************
-    // Private Methods (Layout)
-    //**********************************************************************
-
-    private Pane	buildPane()
+    public void initialize()
     {
+        if (ingredients != null)
+            registerPropertyListeners(ingredients);
+        //if (recipes != null)
+           // registerPropertyListeners(recipes);    
+    }
+
+    public void terminate()
+    {
+        if (ingredients != null)
+            unregisterPropertyListeners(ingredients);
+        //if (recipes != null)
+           // unregisterPropertyListeners(recipes);   
+    }
+
+    public void update(String key, Object value)
+    {
+        if (ingredients == null)
+                return;
+        if (recipes == null)
+                return;        
+    }
+
+    private void registerPropertyListeners(ObservableList<Ingredient> ingredients)
+    {
+
+    }
+
+    private void unregisterPropertyListeners(ObservableList<Ingredient> ingredients)
+    {
+
+    }
+
+    // Private Methods (Layout)
+
+    private Pane buildPane()
+    {
+
+        //shoppingColumn = new TableColumn<>("Ingredient");
+        
+        //table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        //table.getColumns().add(shoppingColumn);
+
         //first column
-        TableColumn<Record, String>	itemColumn =
-                new TableColumn<Record, String>("Item");
+        TableColumn<Recipe, String>	itemColumn =
+                new TableColumn<Recipe, String>("Item");
 
         itemColumn.setEditable(false);
         itemColumn.setPrefWidth(150);
         itemColumn.setCellValueFactory(
-                new PropertyValueFactory<Record, String>("item"));
-        itemColumn.setCellFactory(new NameCellFactory());
+                new PropertyValueFactory<Recipe, String>("item"));
+        itemColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
+    //    itemColumn.setItems()
 
         // second column
-        TableColumn<Record, String>	recipeColumn =
-                new TableColumn<Record, String>("Recipe");
+        TableColumn<Recipe, String>	recipeColumn =
+                new TableColumn<Recipe, String>("Recipe");
 
         recipeColumn.setEditable(false);
         recipeColumn.setPrefWidth(150);
         recipeColumn.setCellValueFactory(
-                new PropertyValueFactory<Record, String>("recipe"));
-        recipeColumn.setCellFactory(new NameCellFactory());
+                new PropertyValueFactory<Recipe, String>("recipe"));
+        recipeColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
+        //recipeColumn.setItems()
 
         //third column
-        TableColumn<Record, String>	quantColumn =
-                new TableColumn<Record, String>("Quantity Needed");
+        TableColumn<Recipe, String>	quantColumn =
+                new TableColumn<Recipe, String>("Quantity Needed");
 
         quantColumn.setEditable(false);
         quantColumn.setPrefWidth(150);
         quantColumn.setCellValueFactory(
-                new PropertyValueFactory<Record, String>("Quantity Needed"));
-        quantColumn.setCellFactory(new NameCellFactory());
+                new PropertyValueFactory<Recipe, String>("Quantity Needed"));
+        //quantColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));                         
+      
 
         //fourth column
-        TableColumn<Record, String>	buyColumn =
-                new TableColumn<Record, String>("Quantity to Buy");
+        TableColumn<Recipe, String>	buyColumn =
+                new TableColumn<Recipe, String>("Quantity Needed");
 
         buyColumn.setEditable(false);
         buyColumn.setPrefWidth(150);
         buyColumn.setCellValueFactory(
-                new PropertyValueFactory<Record, String>("Quantity to buy"));
-        buyColumn.setCellFactory(new NameCellFactory());
+                new PropertyValueFactory<Recipe, String>("Quantity Needed"));
+        //buyColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
+   
 
         //fifth column
-        TableColumn<Record, String>	ownColumn =
-                new TableColumn<Record, String>("Quantity owned");
+        TableColumn<Recipe, String>	ownColumn =
+                new TableColumn<Recipe, String>("Quantity owned");
 
         ownColumn.setEditable(false);
         ownColumn.setPrefWidth(150);
         ownColumn.setCellValueFactory(
-                new PropertyValueFactory<Record, String>("Quantity owned"));
-        ownColumn.setCellFactory(new NameCellFactory());
+                new PropertyValueFactory<Recipe, String>("Quantity owned"));
+        //ownColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
 
 
         // Create the table from the columns
-        table = new TableView<Record>();
-        smodel = table.getSelectionModel();
+        table = new TableView<>();
+
+        //table = new TableView<Recipe>();
+        //smodel = table.getSelectionModel();
 
         table.setEditable(false);
         table.setPlaceholder(new Text("No Data!"));
-        //table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         table.getColumns().add(itemColumn);
         table.getColumns().add(recipeColumn);
@@ -138,7 +171,7 @@ public final class ShoppingListPage extends AbstractPane
         table.getColumns().add(buyColumn);
         table.getColumns().add(ownColumn);
 
-        //table.setItems(records);
+        table.setItems(recipes);
 
         // Create a split pane to share space between the cover pane and table
         SplitPane	splitPane = new SplitPane();
@@ -149,11 +182,11 @@ public final class ShoppingListPage extends AbstractPane
     }
 
 
-    public static final class Record
+    public static final class Recipe
     {
         private final SimpleStringProperty	item;
 
-        public Record(String item)
+        public Recipe(String item)
         {
             this.item = new SimpleStringProperty(item);
         }
@@ -169,49 +202,20 @@ public final class ShoppingListPage extends AbstractPane
         }
 
     }
-    //**********************************************************************
-    // Private Methods (Change Handlers)
-    //**********************************************************************
 
-    private void	changeIndex(ObservableValue<? extends Number> observable,
-                                Number oldValue, Number newValue)
+    private ArrayList<ObservableList<Recipe>> getIngredients()
     {
-        int	index = (Integer)newValue;
+        ArrayList<ObservableList<Recipe>> ingredItems = new ArrayList<>();
 
-        controller.set("itemIndex", index);
-    }
-
-    //**********************************************************************
-    // Inner Classes (Cell Factories)
-    //**********************************************************************
-
-    private static final class NameCellFactory
-            implements Callback<TableColumn<Record, String>,
-            TableCell<Record, String>>
-    {
-        public TableCell<Record, String>	call(TableColumn<Record, String> v)
-        {
-            return new NameCell();
-        }
-    }
-
-
-    private static final class NameCell extends TableCell<Record, String>
-    {
-        protected void	updateItem(String item, boolean empty)
-        {
-            super.updateItem(item, empty);			// Prepare for setup
-
-            if (empty || (item == null))			// Handle special cases
-            {
-                setText(null);
-                setGraphic(null);
-
-                return;
+        for (Recipe recipe : recipes) {
+            ArrayList<String> ingredients_list = new ArrayList<>();
+           // ingredients_list = recipe.getIngredients();
+            for(int i =0; i < 5; i++) {
+           //     ingredItems.add(ingredients_list[i]);
             }
-
-            setText(item);
-            setTextOverrun(OverrunStyle.CENTER_ELLIPSIS);
-        }
+         }
+        return ingredItems;
     }
+        
+
 }
