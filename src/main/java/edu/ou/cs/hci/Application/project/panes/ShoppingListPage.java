@@ -79,33 +79,6 @@ public final class ShoppingListPage extends AbstractPane
                 return;        
     }
 
-    /*     
-    public void updateProperty(String key, Object nexVal, Object prevVal)
-    {
-        if ("ingredients".equals(key))
-        {
-            ObservableList<Ingredient> prev = (ObservableList<Ingredient>) prevVal;
-            ObservableList<Ingredient> nex = (ObservableList<Ingredient>) nexVal;
-
-            if (prev != null)
-                unregisterPropertyListeners(prev);
-
-            if (nex != null)
-                registerPropertyListeners(nex);
-        }
-        if ("recipe".equals(key))
-        {
-            ObservableList<Recipe> prev = (ObservableList<Recipe>) prevVal;
-            ObservableList<Recipe> nex = (ObservableList<Recipe>) nexVal;
-
-            if (prev != null)
-                unregisterPropertyListeners(prev);
-
-            if (nex != null)
-                registerPropertyListeners(nex);
-        }
-    }
-    */
     private void registerPropertyListeners(ObservableList<Ingredient> ingredients)
     {
 
