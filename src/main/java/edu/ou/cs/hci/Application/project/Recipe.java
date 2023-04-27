@@ -9,6 +9,7 @@ public class Recipe {
     private final ArrayList<SimpleStringProperty>   recipeIngredients;
     private final ArrayList<SimpleDoubleProperty>   recipeAmountSize;
     private final ArrayList<SimpleStringProperty>   recipeAmountType;
+
     private final SimpleBooleanProperty             gluten;
     private final SimpleBooleanProperty             dairy;
     private final SimpleIntegerProperty             servings;
@@ -21,7 +22,7 @@ public class Recipe {
         recipeIngredients = new ArrayList<>();
         recipeAmountSize = new ArrayList<>();
         recipeAmountType = new ArrayList<>();
-
+        
         populateIngredientLists(item);
 
         gluten = new SimpleBooleanProperty(Boolean.parseBoolean(item.get(3)));
@@ -61,22 +62,26 @@ public class Recipe {
     /////////////
     // Getters //
     /////////////
+
     public String getRecipeName() { return recipeName.get(); }
     public ArrayList<String> getIngredients() {
         ArrayList<String> ingredients_list = new ArrayList<>();
         for (SimpleStringProperty ing: recipeIngredients)
+
             ingredients_list.add(ing.get());
         return ingredients_list;
     }
     public ArrayList<Double> getAmountSize() {
         ArrayList<Double> amountSize_list = new ArrayList<>();
         for (SimpleDoubleProperty amtSize: recipeAmountSize)
+
             amountSize_list.add(amtSize.get());
         return amountSize_list;
     }
     public ArrayList<String> getAmountType() {
         ArrayList<String> amountType_list = new ArrayList<>();
         for (SimpleStringProperty amtType: recipeAmountType)
+
             amountType_list.add(amtType.get());
         return amountType_list;
     }
@@ -94,6 +99,7 @@ public class Recipe {
     public void setRecipeIngredient(String v, int idx) { recipeIngredients.get(idx).set(v); }
     public void setAmountSize(double v, int idx) { recipeAmountSize.get(idx).set(v); }
     public void setAmountType(String v, int idx) { recipeAmountType.get(idx).set(v); }
+    
     public void setGluten(boolean v) { gluten.set(v); }
     public void setDairy(boolean v) { dairy.set(v); }
     public void setServings(int v) { servings.set(v); }
@@ -104,10 +110,12 @@ public class Recipe {
     //////////////////////
     // Property Methods //
     //////////////////////
+
     public StringProperty  recipeNameProperty() { return recipeName; }
     public DoubleProperty  amountSizeProperty(int idx) { return recipeAmountSize.get(idx); }
     public StringProperty  amountTypeProperty(int idx) { return recipeAmountType.get(idx); }
     public StringProperty  recipeIngredientProperty(int idx) { return recipeIngredients.get(idx); }
+
     public BooleanProperty glutenProperty() { return gluten; }
     public BooleanProperty dairyProperty() { return dairy; }
     public IntegerProperty servingsProperty() { return servings; }
