@@ -72,6 +72,7 @@ public class SavedRecipesPage extends AbstractPane {
                 return new SimpleStringProperty(p.getValue());
             }
         });
+
         recipeTable.getColumns().addAll(ingredientCol, caloriesCol, amountCol, portionCol);
 
         // Create the main pane and set its size

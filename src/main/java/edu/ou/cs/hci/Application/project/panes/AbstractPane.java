@@ -4,6 +4,8 @@ package edu.ou.cs.hci.Application.project.panes;
 import java.util.*;
 
 import edu.ou.cs.hci.Application.project.Recipe;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.*;
@@ -16,13 +18,16 @@ import edu.ou.cs.hci.Application.project.resources.*;
 import edu.ou.cs.hci.Application.project.View;
 //******************************************************************************
 
-
+@SuppressWarnings("unchecked")
 public abstract class AbstractPane
 {
     //**********************************************************************
     // Public Class Members
     //**********************************************************************
-
+    public static final String[] CATEGORIES = {
+            "Fruits", "Vegetables", "Protein/Alternatives",
+            "Dairy/Alternatives", "Grains", "Fats/Oils/Spices"
+    };
     public static final String	RSRC		= "edu/ou/cs/hci/resources/";
 
     public static final String	SWING_ICON	= RSRC + "example/swing/icon/";
@@ -37,6 +42,9 @@ public abstract class AbstractPane
     protected final Controller	controller;
     protected final String		name;
     protected final String		hint;
+    protected ObservableList<Recipe> abstractRecipes;
+    protected ObservableList<Ingredient> abstractIngredients;
+    protected ArrayList<Ingredient>       selectedIngredients;
 
     // Provided when the subclass constructor calls setBase()
     protected Node				base;
@@ -50,6 +58,11 @@ public abstract class AbstractPane
         this.controller = controller;
         this.name = name;
         this.hint = hint;
+
+        // Makes it so that you can call these ingredients in any pane without having to refer to the controller.
+        abstractRecipes = (ObservableList<Recipe>)controller.getProperty("recipes");
+        abstractIngredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
+        selectedIngredients = new ArrayList<>();
     }
 
     //**********************************************************************
@@ -143,7 +156,6 @@ public abstract class AbstractPane
         else if (pageName.equals("ShoppingListPage")) {
             sm.select(4);
         }
-
         System.out.println(sm.getSelectedItem().getText());
     }
 
