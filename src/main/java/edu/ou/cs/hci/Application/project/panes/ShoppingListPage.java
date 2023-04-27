@@ -41,6 +41,9 @@ public final class ShoppingListPage extends AbstractPane
     private List<List<String>>			data;
     private TableColumn<Recipe, String> shoppingColumn;
     private ArrayList<ObservableList<Ingredient>> ingredItems;
+    private ArrayList<String>          recipeIngredients;
+    private ArrayList<Double>          recipeAmountSize;
+    private ArrayList<String>          recipeAmountType;
     // Layout
     private BorderPane					base;
     private TableView<Recipe>			table;
@@ -56,6 +59,9 @@ public final class ShoppingListPage extends AbstractPane
 
     public void	initialize()
 	{
+        recipeIngredients = new ArrayList<>();
+        recipeAmountSize = new ArrayList<>();
+        recipeAmountType = new ArrayList<>();
 		Recipe recipe = (Recipe)controller.getProperty("recipe");
         updateFilter();
 		smodel.select(recipe);
@@ -65,6 +71,7 @@ public final class ShoppingListPage extends AbstractPane
 	{
 		ObservableList<Recipe> recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
         //Recipe recipe = controller.getProperty(recipe);
+        ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
 		table.setItems(new FilteredList<Recipe>(recipes));
 	}
 
@@ -78,6 +85,13 @@ public final class ShoppingListPage extends AbstractPane
     private TableColumn<Recipe, String>	buildIngredientsColumn()
 	{
 		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Ingredients");
+        for(Recipe recipe : recipes) {
+            recipe = (Recipe)controller.getProperty("recipe");
+            recipeIngredients = recipe.getRecipeIngredients();
+            //need to add each ingredient here to the column...
+        }
+        
+        
 		column.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipeIngredients"));
 		return column;
 	}
@@ -110,7 +124,6 @@ public final class ShoppingListPage extends AbstractPane
 		return column;
 	}
     
-
 
     private Pane buildPane()
     {
