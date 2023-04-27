@@ -6,6 +6,8 @@ import edu.ou.cs.hci.Application.project.resources.Ingredient;
 import edu.ou.cs.hci.Application.project.Recipe;
 
 //import java.lang.*;
+import java.util.function.Predicate;
+import javafx.collections.transformation.FilteredList;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -51,6 +53,20 @@ public final class ShoppingListPage extends AbstractPane
         //ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
         setBase(buildPane());
     }
+
+    public void	initialize()
+	{
+		Recipe recipe = (Recipe)controller.getProperty("recipe");
+        updateFilter();
+		smodel.select(recipe);
+	}
+
+    private void updateFilter()
+	{
+		ObservableList<Recipe> recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
+        //Recipe recipe = controller.getProperty(recipe);
+		table.setItems(new FilteredList<Recipe>(recipes));
+	}
 
     // Private Methods (Layout)
     private TableColumn<Recipe, Boolean> buildSavedColumn()
@@ -106,12 +122,13 @@ public final class ShoppingListPage extends AbstractPane
         table.setPlaceholder(new Text("No Data!"));
        // table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        table.getColumns().add(buildSavedColumn());
+        //table.getColumns().add(buildSavedColumn());
         table.getColumns().add(buildIngredientsColumn());
         table.getColumns().add(buildRecipeColumn());
         table.getColumns().add(buildQuantColumn());
         //table.getColumns().add(buildBuyColumn());
         //table.getColumns().add(buildOwnColumn());
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Create a split pane to share space between the cover pane and table
         SplitPane	splitPane = new SplitPane();
@@ -119,28 +136,6 @@ public final class ShoppingListPage extends AbstractPane
         base = new BorderPane(splitPane);
 
         return base;
-    }
-
-
-    public static final class Recipe
-    {
-        private final SimpleStringProperty	item;
-
-        public Recipe(String item)
-        {
-            this.item = new SimpleStringProperty(item);
-        }
-
-        public String	getItem()
-        {
-            return item.get();
-        }
-
-        public void	setItem(String v)
-        {
-            this.item.set(v);
-        }
-
     }
         
 
