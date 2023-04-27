@@ -26,13 +26,13 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-@SuppressWarnings("unchecked")
+
 public final class ShoppingListPage extends AbstractPane
 {
     // Private Class Members
     private ObservableList<Ingredient>  ingredients;
     private ObservableList<Recipe>      recipes;
-    private SelectionModel<Ingredient>  smodel;
+    private SelectionModel<Recipe>      smodel;
     private Pane                        shoppingPane;
     private static final String	NAME = "Shopping List";
     private static final String	HINT = "Shopping List for ingredients";
@@ -48,130 +48,70 @@ public final class ShoppingListPage extends AbstractPane
     public ShoppingListPage(Controller controller)
     {
         super(controller, NAME, HINT);
-        ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
-        recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
+        //ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
         setBase(buildPane());
     }
 
-    // Public Methods (Controller), controller calls this method when it adds a view.
-
-    public void initialize()
-    {
-        if (ingredients != null)
-            registerPropertyListeners(ingredients);
-        //if (recipes != null)
-           // registerPropertyListeners(recipes);    
-    }
-
-    public void terminate()
-    {
-        if (ingredients != null)
-            unregisterPropertyListeners(ingredients);
-        //if (recipes != null)
-           // unregisterPropertyListeners(recipes);   
-    }
-
-    public void update(String key, Object value)
-    {
-        if (ingredients == null)
-                return;
-        if (recipes == null)
-                return;        
-    }
-
-    private void registerPropertyListeners(ObservableList<Ingredient> ingredients)
-    {
-
-    }
-
-    private void unregisterPropertyListeners(ObservableList<Ingredient> ingredients)
-    {
-
-    }
-
     // Private Methods (Layout)
+    private TableColumn<Recipe, Boolean> buildSavedColumn()
+	{
+		TableColumn<Recipe, Boolean> column = new TableColumn<Recipe, Boolean>("Saved");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
+		return column;
+	}
+    private TableColumn<Recipe, String>	buildIngredientsColumn()
+	{
+		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Ingredients");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipeIngredients"));
+		return column;
+	}
+
+    private TableColumn<Recipe, String>	buildRecipeColumn()
+	{
+		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Recipe");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipeName"));
+		return column;
+	}
+
+    private TableColumn<Recipe, Double> buildQuantColumn()
+	{
+		TableColumn<Recipe, Double>	column = new TableColumn<Recipe, Double>("Amount needed");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("recipeAmountSize"));
+		return column;
+	}
+
+    private TableColumn<Recipe, Double> buildBuyColumn()
+	{
+        TableColumn<Recipe, Double>	column = new TableColumn<Recipe, Double>("Amount to Buy");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("recipeAmountSize"));
+		return column;
+	}
+
+    private TableColumn<Recipe, Double> buildOwnColumn()
+	{
+		TableColumn<Recipe, Double>	column = new TableColumn<Recipe, Double>("Amount Owned");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("recipeAmountSize"));
+		return column;
+	}
+    
+
 
     private Pane buildPane()
     {
-
-        //shoppingColumn = new TableColumn<>("Ingredient");
-        
-        //table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        //table.getColumns().add(shoppingColumn);
-
-        //first column
-        TableColumn<Recipe, String>	itemColumn =
-                new TableColumn<Recipe, String>("Item");
-
-        itemColumn.setEditable(false);
-        itemColumn.setPrefWidth(150);
-        itemColumn.setCellValueFactory(
-                new PropertyValueFactory<Recipe, String>("item"));
-        itemColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
-    //    itemColumn.setItems()
-
-        // second column
-        TableColumn<Recipe, String>	recipeColumn =
-                new TableColumn<Recipe, String>("Recipe");
-
-        recipeColumn.setEditable(false);
-        recipeColumn.setPrefWidth(150);
-        recipeColumn.setCellValueFactory(
-                new PropertyValueFactory<Recipe, String>("recipe"));
-        recipeColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
-        //recipeColumn.setItems()
-
-        //third column
-        TableColumn<Recipe, String>	quantColumn =
-                new TableColumn<Recipe, String>("Quantity Needed");
-
-        quantColumn.setEditable(false);
-        quantColumn.setPrefWidth(150);
-        quantColumn.setCellValueFactory(
-                new PropertyValueFactory<Recipe, String>("Quantity Needed"));
-        //quantColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));                         
-      
-
-        //fourth column
-        TableColumn<Recipe, String>	buyColumn =
-                new TableColumn<Recipe, String>("Quantity Needed");
-
-        buyColumn.setEditable(false);
-        buyColumn.setPrefWidth(150);
-        buyColumn.setCellValueFactory(
-                new PropertyValueFactory<Recipe, String>("Quantity Needed"));
-        //buyColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
-   
-
-        //fifth column
-        TableColumn<Recipe, String>	ownColumn =
-                new TableColumn<Recipe, String>("Quantity owned");
-
-        ownColumn.setEditable(false);
-        ownColumn.setPrefWidth(150);
-        ownColumn.setCellValueFactory(
-                new PropertyValueFactory<Recipe, String>("Quantity owned"));
-        //ownColumn.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipe_name"));         
-
-
         // Create the table from the columns
         table = new TableView<>();
-
-        //table = new TableView<Recipe>();
         //smodel = table.getSelectionModel();
 
         table.setEditable(false);
         table.setPlaceholder(new Text("No Data!"));
-        table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+       // table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        table.getColumns().add(itemColumn);
-        table.getColumns().add(recipeColumn);
-        table.getColumns().add(quantColumn);
-        table.getColumns().add(buyColumn);
-        table.getColumns().add(ownColumn);
-
-        table.setItems(recipes);
+        table.getColumns().add(buildSavedColumn());
+        table.getColumns().add(buildIngredientsColumn());
+        table.getColumns().add(buildRecipeColumn());
+        table.getColumns().add(buildQuantColumn());
+        //table.getColumns().add(buildBuyColumn());
+        //table.getColumns().add(buildOwnColumn());
 
         // Create a split pane to share space between the cover pane and table
         SplitPane	splitPane = new SplitPane();
@@ -201,20 +141,6 @@ public final class ShoppingListPage extends AbstractPane
             this.item.set(v);
         }
 
-    }
-
-    private ArrayList<ObservableList<Recipe>> getIngredients()
-    {
-        ArrayList<ObservableList<Recipe>> ingredItems = new ArrayList<>();
-
-        for (Recipe recipe : recipes) {
-            ArrayList<String> ingredients_list = new ArrayList<>();
-           // ingredients_list = recipe.getIngredients();
-            for(int i =0; i < 5; i++) {
-           //     ingredItems.add(ingredients_list[i]);
-            }
-         }
-        return ingredItems;
     }
         
 
