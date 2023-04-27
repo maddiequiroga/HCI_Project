@@ -53,6 +53,8 @@ public final class BrowsePage extends AbstractPane {
     private Spinner<Integer> cookingTime;
     private ActionHandler actionHandler;
 
+    private Label directions;
+
     private boolean	ignoreSelectionEvents;
 
     //===============================================================================================
@@ -67,17 +69,75 @@ public final class BrowsePage extends AbstractPane {
     public void	initialize()
 	{
 		registerWidgetHandlers();
+
+		Recipe recipe = (Recipe)controller.getProperty("recipe");
+
+		if (recipe == null)
+			populateWidgetsWithDefaultValues();
+		else
+            populateWidgetsWithCurrentValues(recipe);
+
+		if (recipe != null)
+			registerPropertyListeners(recipe);
+
 		updateFilter();
+
+		smodel.select(recipe);
 	}
 
     private void updateFilter()
 	{
 		ObservableList<Recipe> recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
+        //Recipe recipe = controller.getProperty(recipe);
 		Predicate<Recipe> predicate = new FilterPredicate();
 
 		ignoreSelectionEvents = true;
 		table.setItems(FXCollections.observableArrayList(new FilteredList<Recipe>(recipes, predicate)));
 		ignoreSelectionEvents = false;
+	}
+
+    public void	updateProperty(String key, Object newValue, Object oldValue)
+	{
+		//System.out.println("CollectionPane.updateProperty " + key +
+		//				   " to " + newValue + " from " + oldValue);
+
+		if ("recipe".equals(key))
+		{
+			Recipe	rold = (Recipe)oldValue;
+			Recipe	rnew = (Recipe)newValue;
+
+			if (rold != null)
+				unregisterPropertyListeners(rold);
+
+			if (rnew == null)
+				populateWidgetsWithDefaultValues();
+			else
+				populateWidgetsWithCurrentValues(rnew);
+
+			if (rnew != null)
+				registerPropertyListeners(rnew);
+
+			smodel.select(rnew);
+		}
+		else if ("recipes".equals(key))
+		{
+			Recipe	recipe = (Recipe)controller.getProperty("recipe");
+
+			updateFilter();
+
+			//smodel.select(movie);
+		}
+	}
+
+    private void populateWidgetsWithDefaultValues()
+	{
+		directions.setText("(Select a recipe to view its directions!)");
+	}
+
+	private void populateWidgetsWithCurrentValues(Recipe recipe)
+	{
+		directions.setText(recipe.getDirections());
+        System.out.println(recipe);
 	}
 
     private Pane buildBrowsePane()
@@ -102,23 +162,22 @@ public final class BrowsePage extends AbstractPane {
 
     private void registerWidgetHandlers()
     {
-
-
+        smodel.selectedItemProperty().addListener(this::changeItem);
     }
 
     private void unregisterWidgetHandlers()
     {
-
+        smodel.selectedItemProperty().removeListener(this::changeItem);
     }
 
-    private void registerPropertyListeners(ObservableList<Recipe> recipes)
+    private void registerPropertyListeners(Recipe recipe)
     {
-
+        recipe.directionsProperty().addListener(this::handleChangeS);
     }
 
-    private void unregisterPropertyListeners(ObservableList<Recipe> recipes)
+    private void unregisterPropertyListeners(Recipe recipe)
     {
-
+        recipe.directionsProperty().removeListener(this::handleChangeS);
     }
 
     private Node buildAccordion()
@@ -197,11 +256,12 @@ public final class BrowsePage extends AbstractPane {
     private Node buildDetailsView()
     {
         // Create a TextField object
-        TextField textField = new TextField("Recipe Details Here");
-        textField.setPrefHeight(200);
+        directions = new Label();
+        directions.setPrefHeight(200);
+        directions.setWrapText(true);
 
         // Create a VBox to hold the TextField
-        VBox detailsBox = new VBox(textField);
+        VBox detailsBox = new VBox(directions);
         detailsBox.setPrefWidth(750);
 
         return detailsBox;
@@ -237,24 +297,46 @@ public final class BrowsePage extends AbstractPane {
 		return column;
 	}
 
-    private TableColumn<Recipe, ArrayList<String>>	buildIngredientsColumn()
+    private TableColumn<Recipe, String>	buildIngredientsColumn()
 	{
-		TableColumn<Recipe, ArrayList<String>>	column = new TableColumn<Recipe, ArrayList<String>>("Ingredients");
-		column.setCellValueFactory(new PropertyValueFactory<Recipe, ArrayList<String>>("recipeIngredients"));
+		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Ingredients");
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipeIngredients"));
 		return column;
 	}
 
     private TableColumn<Recipe, Integer> buildServingColumn()
 	{
 		TableColumn<Recipe, Integer> column = new TableColumn<Recipe, Integer>("Serving Size");
-		column.setCellValueFactory(new PropertyValueFactory<Recipe, Integer>("recipeServings"));
+		column.setCellValueFactory(new PropertyValueFactory<Recipe, Integer>("servings"));
 		return column;
 	}
 
     private TableColumn<Recipe, Boolean> buildAllergensColumn()
 	{
 		TableColumn<Recipe, Boolean> column = new TableColumn<Recipe, Boolean>("Allergens");
-		column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
+		//column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
+        column.setCellFactory(x -> new TableCell<Recipe, Boolean>() {
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty) {
+                setText(null);
+            } else {
+                Recipe object = table.getItems().get(getIndex());
+                boolean dairyFree = object.getDairy();
+                boolean glutenFree = object.getGluten();
+                if (dairyFree && glutenFree) {
+                    setText("Dairy Free, Gluten Free");
+                } else if (dairyFree) {
+                    setText("Dairy Free");
+                } else if (glutenFree) {
+                    setText("Gluten Free");
+                } else {
+                    setText("");
+                }
+            }
+        }
+});
 		return column;
 	}
 
@@ -264,7 +346,6 @@ public final class BrowsePage extends AbstractPane {
 		column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
 		return column;
 	}
-
     
     /*
     private ArrayList<ArrayList<String>> divideRecipeColumns()
@@ -315,6 +396,27 @@ public final class BrowsePage extends AbstractPane {
     }
     */
 
+   private void changeItem(ObservableValue<? extends Recipe> observable,
+							   Recipe oldValue, Recipe newValue)
+	{
+		// Ignore changes to Table selection that arise from filtering.
+		if (ignoreSelectionEvents)
+			return;
+
+		if (observable == smodel.selectedItemProperty())
+			controller.setProperty("recipe", newValue);
+	}
+
+   private void	handleChangeS(ObservableValue<? extends String> observable,
+								  String oldValue, String newValue)
+	{
+		Recipe selectedRecipe = (Recipe)controller.getProperty("recipe");
+        System.out.println(observable);
+
+		if (observable == selectedRecipe.directionsProperty())
+			directions.setText(newValue);
+	}
+
     private final class ActionHandler
             implements EventHandler<ActionEvent>
     {
@@ -334,13 +436,13 @@ public final class BrowsePage extends AbstractPane {
             if ((rn.length() > 0) && !recipe.getRecipeName().contains(rn))
 				return false;
 
-            if (ingredient1.isSelected() && !recipe.getIngredients().contains("Chicken"))
+            if (ingredient1.isSelected() && !recipe.getRecipeIngredients().contains("Chicken"))
                 return false;
 
-            if (ingredient2.isSelected() && !recipe.getIngredients().contains("Lettuce"))
+            if (ingredient2.isSelected() && !recipe.getRecipeIngredients().contains("Lettuce"))
                 return false;
 
-            if (ingredient3.isSelected() && !recipe.getIngredients().contains("Cheese"))
+            if (ingredient3.isSelected() && !recipe.getRecipeIngredients().contains("Cheese"))
                 return false;
 
             if (recipe.getServings() < servingSize.getValue())
