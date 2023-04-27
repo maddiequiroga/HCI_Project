@@ -2,6 +2,7 @@ package edu.ou.cs.hci.Application.project.resources;
 
 import javafx.beans.property.*;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -13,10 +14,12 @@ public class Ingredient {
     private final SimpleStringProperty quantityType;
     private final SimpleStringProperty expirationDate;
     private final SimpleIntegerProperty ingredientType;
+
     public Ingredient(List<String> item) {
         ingredientName = new SimpleStringProperty(item.get(0));
         quantitySize = new SimpleDoubleProperty(Double.parseDouble(item.get(1)));
         quantityType = new SimpleStringProperty(item.get(2));
+
         expirationDate = new SimpleStringProperty(item.get(3));
         ingredientType = new SimpleIntegerProperty(Integer.parseInt(item.get(4)));
     }
@@ -42,6 +45,7 @@ public class Ingredient {
     //////////////////////
     // Property Methods //
     //////////////////////
+
     public StringProperty ingredientNameProperty() { return ingredientName; }
     public DoubleProperty quantitySizeProperty() { return quantitySize; }
     public StringProperty quantityTypeProperty() { return quantityType; }
