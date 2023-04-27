@@ -64,21 +64,21 @@ public class Recipe {
     /////////////
 
     public String getRecipeName() { return recipeName.get(); }
-    public ArrayList<String> getIngredients() {
+    public ArrayList<String> getRecipeIngredients() {
         ArrayList<String> ingredients_list = new ArrayList<>();
         for (SimpleStringProperty ing: recipeIngredients)
 
             ingredients_list.add(ing.get());
         return ingredients_list;
     }
-    public ArrayList<Double> getAmountSize() {
+    public ArrayList<Double> getRecipeAmountSize() {
         ArrayList<Double> amountSize_list = new ArrayList<>();
         for (SimpleDoubleProperty amtSize: recipeAmountSize)
 
             amountSize_list.add(amtSize.get());
         return amountSize_list;
     }
-    public ArrayList<String> getAmountType() {
+    public ArrayList<String> getRecipeAmountType() {
         ArrayList<String> amountType_list = new ArrayList<>();
         for (SimpleStringProperty amtType: recipeAmountType)
 
@@ -96,9 +96,9 @@ public class Recipe {
     // Setters //
     /////////////
     public void setRecipeName(String v) { recipeName.set(v); }
-    public void setRecipeIngredient(String v, int idx) { recipeIngredients.get(idx).set(v); }
-    public void setAmountSize(double v, int idx) { recipeAmountSize.get(idx).set(v); }
-    public void setAmountType(String v, int idx) { recipeAmountType.get(idx).set(v); }
+    public void setRecipeIngredients(String v, int idx) { recipeIngredients.get(idx).set(v); }
+    public void setRecipeAmountSize(double v, int idx) { recipeAmountSize.get(idx).set(v); }
+    public void setRecipeAmountType(String v, int idx) { recipeAmountType.get(idx).set(v); }
     
     public void setGluten(boolean v) { gluten.set(v); }
     public void setDairy(boolean v) { dairy.set(v); }
@@ -128,9 +128,9 @@ public class Recipe {
         ArrayList<String>	list = new ArrayList<String>();
 
         list.add(getRecipeName());
-        list.add(getIngredients().toString());
-        list.add(getAmountSize().toString());
-        list.add(getAmountType().toString());
+        list.add(getRecipeIngredients().toString());
+        list.add(getRecipeAmountSize().toString());
+        list.add(getRecipeAmountType().toString());
         list.add(Boolean.toString(getGluten()));
         list.add(Boolean.toString(getDairy()));
         list.add(Integer.toString(getServings()));
