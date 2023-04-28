@@ -27,6 +27,7 @@ import javafx.*;
 import javafx.util.Callback;
 import javafx.util.converter.DefaultStringConverter;
 
+
 import javax.swing.*;
 
 public final class BrowsePage extends AbstractPane {
@@ -55,6 +56,8 @@ public final class BrowsePage extends AbstractPane {
 
     private Label directions;
 
+    private CheckBox saved;
+
     private boolean	ignoreSelectionEvents;
 
     //===============================================================================================
@@ -62,7 +65,6 @@ public final class BrowsePage extends AbstractPane {
     public BrowsePage(Controller controller) {
         super(controller, "Browse Recipes", "Add/Remove Ingredients");
         setBase(buildBrowsePane());
-        //recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
         actionHandler = new ActionHandler();
     }
 
@@ -88,7 +90,6 @@ public final class BrowsePage extends AbstractPane {
     private void updateFilter()
 	{
 		ObservableList<Recipe> recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
-        //Recipe recipe = controller.getProperty(recipe);
 		Predicate<Recipe> predicate = new FilterPredicate();
 
 		ignoreSelectionEvents = true;
@@ -139,7 +140,6 @@ public final class BrowsePage extends AbstractPane {
         // Create a split pane to share space between the cover pane and table
         HBox topSection = new HBox();
         topSection.getChildren().add(buildTableView());
-        topSection.getChildren().add(buildFilterView());
 
         VBox bodySection = new VBox();
         bodySection.getChildren().add(topSection);
@@ -162,6 +162,7 @@ public final class BrowsePage extends AbstractPane {
         checkboxDairy.selectedProperty().addListener(this::changeBoolean);
         checkboxGluten.selectedProperty().addListener(this::changeBoolean);
         cookingTime.valueProperty().addListener(this::changeDouble);
+        saved.selectedProperty().addListener(this::changeBoolean);
     }
 
     private void unregisterWidgetHandlers()
@@ -172,6 +173,7 @@ public final class BrowsePage extends AbstractPane {
         checkboxDairy.selectedProperty().removeListener(this::changeBoolean);
         checkboxGluten.selectedProperty().removeListener(this::changeBoolean);
         cookingTime.valueProperty().removeListener(this::changeDouble);
+        saved.selectedProperty().removeListener(this::changeBoolean);
     }
 
     private void registerPropertyListeners(Recipe recipe)
@@ -195,15 +197,6 @@ public final class BrowsePage extends AbstractPane {
         recipeSearch = new TextField();
         VBox recipeSearchBox = new VBox(label, recipeSearch);
         pane1.setContent(recipeSearchBox);
-
-        /*
-        TitledPane pane2 = new TitledPane("Ingredients", new VBox());
-        VBox ingredientsBox = (VBox) pane2.getContent();
-        ingredient1 = new CheckBox("Chicken");
-        ingredient2 = new CheckBox("Lettuce");
-        ingredient3 = new CheckBox("Cheese");
-        ingredientsBox.getChildren().addAll(ingredient1, ingredient2, ingredient3);
-        */
 
         TitledPane pane3 = new TitledPane("Serving Size", new VBox());
         VBox servingSizeBox = (VBox) pane3.getContent();
@@ -240,31 +233,13 @@ public final class BrowsePage extends AbstractPane {
         return accordionBox;
     }
 
-    private Node buildFilterView()
-    {
-        // Create a TextField object
-        TextField textField = new TextField("Filters Here");
-        textField.setPrefHeight(400);
-
-        // Create a VBox to hold the TextField
-        VBox filtersBox = new VBox(textField);
-        filtersBox.setPrefWidth(100);
-
-        // Create a button to clear the filters
-        Button clearFiltersButton = new Button("Clear Filters");
-        clearFiltersButton.setPrefWidth(100);
-        filtersBox.getChildren().add(clearFiltersButton);
-        filtersBox.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
-
-        return filtersBox;
-    }
-
     private Node buildDetailsView()
     {
         // Create a TextField object
         directions = new Label();
-        directions.setPrefHeight(200);
         directions.setWrapText(true);
+
+        saved = new CheckBox();
 
         // Create a VBox to hold the TextField
         VBox detailsBox = new VBox(directions);
@@ -277,7 +252,7 @@ public final class BrowsePage extends AbstractPane {
     {
         // Create the table and grab its selection model
 		table = new TableView<Recipe>();
-        table.setPrefSize(700, 400);
+        table.setPrefSize(800, 400);
         smodel = table.getSelectionModel();
 
 		// Set up some helpful stuff including single selection mode
@@ -321,7 +296,6 @@ public final class BrowsePage extends AbstractPane {
     private TableColumn<Recipe, Boolean> buildAllergensColumn()
 	{
 		TableColumn<Recipe, Boolean> column = new TableColumn<Recipe, Boolean>("Allergens");
-		//column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
         column.setCellFactory(x -> new TableCell<Recipe, Boolean>() {
         @Override
         protected void updateItem(Boolean item, boolean empty) {
@@ -355,64 +329,50 @@ public final class BrowsePage extends AbstractPane {
     }
 
     private TableColumn<Recipe, Boolean> buildSavedColumn()
-	{
-		TableColumn<Recipe, Boolean> column = new TableColumn<Recipe, Boolean>("Saved");
-		column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>(""));
-		return column;
-	}
-    
-    /*
-    private ArrayList<ArrayList<String>> divideRecipeColumns()
     {
-        // Fruits - 0
-        // Vegetables - 1
-        // Protein/Alternatives - 2
-        // Dairy/Alternatives - 3
-        // Grains - 4
-        // Fats/Oils/Spices - 5
-        ArrayList<ArrayList<String>> grandList = new ArrayList<>();
-        ArrayList<String> listRecipeNames = new ArrayList<>();
-        ArrayList<String> listIngredients = new ArrayList<>();
-        ArrayList<String> listAmountSizes = new ArrayList<>();
-        ArrayList<String> listAmountTypes = new ArrayList<>();
-        ArrayList<String> listGluten = new ArrayList<>();
-        ArrayList<String> listDairy = new ArrayList<>();
-        ArrayList<String> listServings = new ArrayList<>();
-        ArrayList<String> listTimes = new ArrayList<>();
-        ArrayList<String> listDirections = new ArrayList<>();
+        TableColumn<Recipe, Boolean> column = new TableColumn<Recipe, Boolean>("Saved");
+        column.setCellValueFactory(new PropertyValueFactory<Recipe, Boolean>("isSaved"));
+        column.setCellFactory(new Callback<TableColumn<Recipe, Boolean>, TableCell<Recipe, Boolean>>() {
+            @Override
+            public TableCell<Recipe, Boolean> call(TableColumn<Recipe, Boolean> param) {
+                return new SavedCell();
+            }
+        });
+        return column;
+    }
 
-        // Populate a list for each separate column
-        for (Recipe recipe : recipes){
-            List<String> strings = recipe.getAllAttributesAsStrings();
-            listRecipeNames.add(strings.get(0));
-            listIngredients.add(strings.get(1));
-            listAmountSizes.add(strings.get(2));
-            listAmountTypes.add(strings.get(3));
-            listGluten.add(strings.get(4));
-            listDairy.add(strings.get(5));
-            listServings.add(strings.get(6));
-            listTimes.add(strings.get(7));
-            listDirections.add(strings.get(8));
+    private class SavedCell extends TableCell<Recipe, Boolean> {
+        private CheckBox checkBox = new CheckBox();
+        
+        public SavedCell() {
+            checkBox.setOnAction(e -> {
+                int index = getIndex();
+                Recipe recipe = table.getItems().get(index);
+                if (recipe != null) {
+                    recipe.setIsSaved(checkBox.isSelected());
+                }
+            });
         }
         
-        // grandList stores lists of each separate column
-        grandList.add(listRecipeNames);
-        grandList.add(listIngredients);
-        grandList.add(listAmountSizes);
-        grandList.add(listAmountTypes);
-        grandList.add(listGluten);
-        grandList.add(listDairy);
-        grandList.add(listServings);
-        grandList.add(listTimes);
-        grandList.add(listDirections);
-        
-        return grandList;
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            
+            if (empty) {
+                setGraphic(null);
+            } else {
+                int index = getIndex();
+                Recipe recipe = table.getItems().get(index);
+                if (recipe != null) {
+                    checkBox.setSelected(recipe.getIsSaved());
+                }
+                setGraphic(checkBox);
+            }
+        }
     }
-    */
 
    private void changeItem(ObservableValue<? extends Recipe> observable, Recipe oldValue, Recipe newValue)
 	{
-		// Ignore changes to Table selection that arise from filtering.
 		if (ignoreSelectionEvents)
 			return;
 
