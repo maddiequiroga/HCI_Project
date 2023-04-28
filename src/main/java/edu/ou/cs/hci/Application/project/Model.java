@@ -17,16 +17,13 @@ import javafx.collections.ObservableList;
 
 public final class Model
 {
-    //**********************************************************************
     // Private Members
-    //**********************************************************************
 
-    // Master of the program, manager of the data, mediator of all updates
     private final Controller				controller;
 
-    // Easy, extensible way to store multiple simple, independent parameters
+
     private final HashMap<String, Object> properties;
-    // Add an ObservableMap to store a set of observable objects.
+
     private final HashMap<String, Observable> observables;
 
     public Model(Controller controller) {
@@ -61,14 +58,7 @@ public final class Model
     }
     private void	addObservables()
     {
-        // For each observable, (1) create a parameter or data structure object;
-        // (2) create a property for it; and (3) add the property to the map.
-        // For some observables, also (4) add a listener to handle changes.
 
-        // ********** Collection File **********
-        // The collection CSV file displayed in the UI. Defaults to null. The
-        // model loads the collection data from that file. If the file is null,
-        // example data is loaded from a fixed resource path (see below).
         SimpleObjectProperty<File>	pfile = new SimpleObjectProperty<File>();
 
         observables.put("file", pfile);
@@ -180,9 +170,9 @@ public final class Model
 
         setValue("file", file);
     }
-    //**********************************************************************
+
     // Public Methods (Controller)
-    //**********************************************************************
+ 
 
 
     public Object	getPropertyValue(String key)
@@ -228,9 +218,9 @@ public final class Model
         System.out.println("  model: (not!) calculating function: " + name);
     }
 
-    //**********************************************************************
+
     // Inner Classes (Updater)
-    //**********************************************************************
+   
 
     private class Updater
             implements Runnable
