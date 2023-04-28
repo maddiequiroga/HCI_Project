@@ -4,66 +4,45 @@ package edu.ou.cs.hci.Application.project;
 import java.io.File;
 import java.util.ArrayList;
 
-//******************************************************************************
 
-/**
- * The <CODE>Controller</CODE> class.
- *
- * @author  Chris Weaver
- * @version %I%, %G%
- */
 public final class Controller
 {
-    //**********************************************************************
     // Private Members
-    //**********************************************************************
-
-    // Where the data lives; only one place.
     private Model					model;
 
     // Where the data is shown; can be in multiple places.
     private final ArrayList<View>	views;
 
-    //**********************************************************************
     // Constructors and Finalizer
-    //**********************************************************************
 
     public Controller()
     {
         this.views = new ArrayList<View>();
     }
-
-    //**********************************************************************
     // Public Methods (Model)
-    //**********************************************************************
 
     public void	setModel(Model model)
     {
         this.model = model;
     }
 
-    // Pass updates from the model on to all the views.
+    // Pass updates from the model
     public void	update(String key, Object value)
     {
-        //System.out.println("controller: update " + key + " to " + value);
 
         for (View v : views)
             v.update(key, value);
     }
 
-    // Pass updates from the model on to all the views.
+    // Pass updates from the model
     public void	updateProperty(String key, Object newValue, Object oldValue)
     {
-        //System.out.println("controller: update " + key + " to " + newValue +
-        //				   " from " + oldValue);
 
         for (View v : views)
             v.updateProperty(key, newValue, oldValue);
     }
 
-    //**********************************************************************
     // Public Methods (Views)
-    //**********************************************************************
 
     public void	addView(View view)
     {
@@ -80,17 +59,14 @@ public final class Controller
             System.exit(0);
     }
 
-    // For views to access data values whenever they want, such as for
-    // drawing or calculating changes in response to interactions.
+    // For views to access data values 
     public Object	get(String key)
     {
-        //System.out.println("controller: get " + key);
 
         return model.getValue(key);
     }
 
-    // For views to modify data values whenever they want, usually after
-    // changes have been calculated in response to an interaction.
+    // For views to modify data values 
     public void	set(String key, Object value)
     {
         System.out.println("controller: set " + key + " to " + value);
@@ -98,11 +74,7 @@ public final class Controller
         model.setValue(key, value);
     }
 
-    // This a placeholder, here to suggest reponsiveness to interactions that
-    // trigger state transitions, such as button presses. In practice, the
-    // trigger would indicate to the model to perform (or initiate a query to
-    // perform) some calculation based on its current data. The set() method
-    // is essentially a trigger in which the calculation is value assignment.
+
     public void	trigger(String name)
     {
         System.out.println("controller: trigger " + name);
@@ -111,7 +83,6 @@ public final class Controller
 
     public Object	getProperty(String key)
     {
-        //System.out.println("controller: get property " + key);
 
         return model.getPropertyValue(key);
     }
