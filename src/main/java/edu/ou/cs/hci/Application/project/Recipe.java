@@ -15,6 +15,7 @@ public class Recipe {
     private final SimpleIntegerProperty             servings;
     private final SimpleDoubleProperty              time;
     private final SimpleStringProperty              directions;
+    private final SimpleBooleanProperty             isSaved;
 
     public Recipe(List<String> item) {
         recipeName = new SimpleStringProperty(item.get(0));
@@ -30,6 +31,7 @@ public class Recipe {
         servings = new SimpleIntegerProperty(Integer.parseInt(item.get(5)));
         time = new SimpleDoubleProperty(Double.parseDouble(item.get(6)));
         directions = new SimpleStringProperty(item.get(7));
+        isSaved = new SimpleBooleanProperty(false);
     }
 
     private void populateIngredientLists(List<String> item) {
@@ -90,7 +92,7 @@ public class Recipe {
     public int getServings() { return servings.get(); }
     public double getTime() { return time.get(); }
     public String getDirections() { return directions.get(); }
-
+    public Boolean getIsSaved() { return isSaved.get(); }
 
     /////////////
     // Setters //
@@ -105,6 +107,7 @@ public class Recipe {
     public void setServings(int v) { servings.set(v); }
     public void setTime(double v) { time.set(v); }
     public void setDirections(String v) { directions.set(v); }
+    public void setIsSaved(boolean v) { isSaved.set(v); }
 
 
     //////////////////////
@@ -121,6 +124,7 @@ public class Recipe {
     public IntegerProperty servingsProperty() { return servings; }
     public DoubleProperty timeProperty() { return time; }
     public StringProperty directionsProperty() { return directions; }
+    public BooleanProperty isSavedProperty() { return isSaved; }
 
 
     public List<String>	getAllAttributesAsStrings()
@@ -136,6 +140,7 @@ public class Recipe {
         list.add(Integer.toString(getServings()));
         list.add(Double.toString(getTime()));
         list.add(getDirections());
+        list.add(Boolean.toString(getIsSaved()));
 
         return list;
     }
