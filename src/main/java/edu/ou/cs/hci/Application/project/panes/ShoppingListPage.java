@@ -71,7 +71,7 @@ public final class ShoppingListPage extends AbstractPane
 	{
 		ObservableList<Recipe> recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
         //Recipe recipe = controller.getProperty(recipe);
-        ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
+      //  ingredients = (ObservableList<Ingredient>)controller.getProperty("ingredients");
 		table.setItems(new FilteredList<Recipe>(recipes));
 	}
 
@@ -85,14 +85,19 @@ public final class ShoppingListPage extends AbstractPane
     private TableColumn<Recipe, String>	buildIngredientsColumn()
 	{
 		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Ingredients");
-        for(Recipe recipe : recipes) {
-            recipe = (Recipe)controller.getProperty("recipe");
-            recipeIngredients = recipe.getRecipeIngredients();
+        //for(Recipe recipe : recipes) {
+        //    recipe = (Recipe)controller.getProperty("recipe");
+        //    recipeIngredients = recipe.getRecipeIngredients();
             //need to add each ingredient here to the column...
-        }
+        //}
+     
         
-        
-		column.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipeIngredients"));
+        column.setCellValueFactory(feature -> feature.getValue().getRecipeIngredients1());
+        //column.setCellValueFactory(feature -> feature.getValue().getRecipeIngredients2());
+        //column.setCellValueFactory(feature -> feature.getValue().getRecipeIngredients3());
+        //column.setCellValueFactory(feature -> feature.getValue().getRecipeIngredients4());
+        //column.setCellValueFactory(feature -> feature.getValue().getRecipeIngredients5());
+		//column.setCellValueFactory(new PropertyValueFactory<Recipe, String>("recipeIngredients"));
 		return column;
 	}
 
@@ -103,10 +108,27 @@ public final class ShoppingListPage extends AbstractPane
 		return column;
 	}
 
-    private TableColumn<Recipe, Double> buildQuantColumn()
+    private TableColumn<Recipe, String> buildQuantColumn()
+	{
+		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Amount needed");
+		column.setCellValueFactory(feature -> feature.getValue().getRecipeAmount1());
+        //column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("recipeAmountSize"));
+		return column;
+	}
+    
+    private TableColumn<Recipe, Double> buildDQuantColumn()
 	{
 		TableColumn<Recipe, Double>	column = new TableColumn<Recipe, Double>("Amount needed");
-		column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("recipeAmountSize"));
+		column.setCellValueFactory(feature -> feature.getValue().getRecipeAmount0());
+        //column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("recipeAmountSize"));
+		return column;
+	}
+     
+    private TableColumn<Recipe, String> buildQuant2Column()
+	{
+		TableColumn<Recipe, String>	column = new TableColumn<Recipe, String>("Units");
+		column.setCellValueFactory(feature -> feature.getValue().getAmount1());
+        //column.setCellValueFactory(new PropertyValueFactory<Recipe, Double>("recipeAmountSize"));
 		return column;
 	}
 
@@ -138,7 +160,8 @@ public final class ShoppingListPage extends AbstractPane
         //table.getColumns().add(buildSavedColumn());
         table.getColumns().add(buildIngredientsColumn());
         table.getColumns().add(buildRecipeColumn());
-        table.getColumns().add(buildQuantColumn());
+        table.getColumns().add(buildDQuantColumn());
+        table.getColumns().add(buildQuant2Column());
         //table.getColumns().add(buildBuyColumn());
         //table.getColumns().add(buildOwnColumn());
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

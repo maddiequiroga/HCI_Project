@@ -73,6 +73,32 @@ public class Recipe {
             ingredients_list.add(ing.get());
         return ingredients_list;
     }
+    public StringProperty getRecipeIngredients1() {
+        StringProperty ingred = new SimpleStringProperty();
+        ingred = recipeIngredients.get(0);
+        return ingred;
+    }
+    public StringProperty getRecipeIngredients2() {
+        StringProperty ingred = new SimpleStringProperty();
+        ingred = recipeIngredients.get(1);
+        return ingred;
+    }
+    public StringProperty getRecipeIngredients3() {
+        StringProperty ingred = new SimpleStringProperty();
+        ingred = recipeIngredients.get(2);
+        return ingred;
+    }
+    public StringProperty getRecipeIngredients4() {
+        StringProperty ingred = new SimpleStringProperty();
+        ingred = recipeIngredients.get(3);
+        return ingred;
+    }
+    public StringProperty getRecipeIngredients5() {
+        StringProperty ingred = new SimpleStringProperty();
+        ingred = recipeIngredients.get(4);
+        return ingred;
+    }
+
     public ArrayList<Double> getRecipeAmountSize() {
         ArrayList<Double> amountSize_list = new ArrayList<>();
         for (SimpleDoubleProperty amtSize: recipeAmountSize)
@@ -80,6 +106,16 @@ public class Recipe {
             amountSize_list.add(amtSize.get());
         return amountSize_list;
     }
+
+    public ObjectProperty<Double> getRecipeAmount0() {
+        return recipeAmountSize.get(0).asObject();
+    }
+
+    public StringProperty getRecipeAmount1() {
+        StringProperty var = new SimpleStringProperty((String) recipeAmountSize.get(4).toString());
+        return var;
+    }
+
     public ArrayList<String> getRecipeAmountType() {
         ArrayList<String> amountType_list = new ArrayList<>();
         for (SimpleStringProperty amtType: recipeAmountType)
@@ -87,6 +123,12 @@ public class Recipe {
             amountType_list.add(amtType.get());
         return amountType_list;
     }
+    public StringProperty getAmount1() {
+        StringProperty ingred = new SimpleStringProperty();
+        ingred = recipeAmountType.get(0);
+        return ingred;
+    }
+
     public Boolean getGluten() { return gluten.get(); }
     public Boolean getDairy() { return dairy.get(); }
     public int getServings() { return servings.get(); }
