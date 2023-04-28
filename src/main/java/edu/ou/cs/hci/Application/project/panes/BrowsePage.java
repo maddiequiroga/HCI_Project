@@ -90,7 +90,6 @@ public final class BrowsePage extends AbstractPane {
     private void updateFilter()
 	{
 		ObservableList<Recipe> recipes = (ObservableList<Recipe>)controller.getProperty("recipes");
-        //Recipe recipe = controller.getProperty(recipe);
 		Predicate<Recipe> predicate = new FilterPredicate();
 
 		ignoreSelectionEvents = true;
@@ -449,5 +448,3 @@ public final class BrowsePage extends AbstractPane {
 	}
     
 }
-
-
