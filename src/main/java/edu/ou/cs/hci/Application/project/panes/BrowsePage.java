@@ -200,9 +200,9 @@ public final class BrowsePage extends AbstractPane {
 
         TitledPane pane3 = new TitledPane("Serving Size", new VBox());
         VBox servingSizeBox = (VBox) pane3.getContent();
-        SpinnerValueFactory<Integer> servingSizeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 50);
+        SpinnerValueFactory<Integer> servingSizeValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 1);
         servingSizeValueFactory.setWrapAround(true);
-        servingSize = new Spinner<>(1, 50, 50);
+        servingSize = new Spinner<>(1, 50, 1);
         servingSize.setValueFactory(servingSizeValueFactory);
         servingSize.setEditable(false);
         servingSize.getStyleClass().add(Spinner.STYLE_CLASS_ARROWS_ON_LEFT_VERTICAL);
@@ -430,7 +430,7 @@ public final class BrowsePage extends AbstractPane {
             if ((rn.length() > 0) && !recipe.getRecipeName().contains(rn))
 				return false;
             
-            if (recipe.getServings() > servingSize.getValue())
+            if (recipe.getServings() < servingSize.getValue())
                 return false;
             
             if (checkboxGluten.isSelected() && !recipe.getGluten()){
